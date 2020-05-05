@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { SafeAreaView, View, Text, TouchableOpacity, Button } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import style from '../../style/app'
+import AvatarComponent from './AvatarComponent'
 
 Ionicons.loadFont()
 
@@ -10,11 +11,11 @@ export default class HeaderComponent extends Component {
         return (
             <SafeAreaView>
                 <View style={style.headerComponent}>
-                    <TouchableOpacity style={style.buttonHeaderComponent}
-                        onPress={() => this.props.navigate.goBack()}>
-                        {this.props.enableButton && <Ionicons name="md-arrow-back" size={24} color={"#212121"} />}
-                        <Text style={style.labelTitleHeaderComponent}>{this.props.title}</Text>
-                    </TouchableOpacity>
+                    {/* <TouchableOpacity style={style.buttonHeaderComponent}> */}
+                    <Text style={style.labelTitleHeaderComponent}>Olá, Cláudio</Text>
+                    <AvatarComponent avatar={"CM"}/>
+                    {/* </TouchableOpacity> */}
+                    
                 </View>
             </SafeAreaView>
         )

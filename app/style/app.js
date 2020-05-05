@@ -7,35 +7,37 @@ export default globalStyle = StyleSheet.create({
     },
     headerComponent: {
         flexDirection: "row",
-        minHeight: 80,
+        minHeight: 50,
         alignItems: "center",
-        marginTop: Platform.OS == "ios" ? 0 : 20,
+        justifyContent: "space-between",
+        marginTop: Platform.OS == "ios" ? 0 : 35,
         marginBottom: Platform.OS == "ios" ? 10 : 0,
-        marginHorizontal: 15
+        marginHorizontal: 15,
+        // backgroundColor: 'red'
     }, 
     buttonHeaderComponent: {
         flexDirection: "row",
         alignItems: "center",
     },
     labelTitleHeaderComponent: {
-        fontSize: 20,
+        fontSize: 22,
         marginLeft: 10,
         color: '#000',
         fontWeight: "bold"
     },
     viewAvatar: {
-        width: 60, 
-        height: 60, 
-        backgroundColor: '#FFDA1A', 
-        borderRadius: 80 / 2, 
+        width: 50, 
+        height: 50, 
+        backgroundColor: '#e64a19', 
+        borderRadius: 60 / 2, 
         alignItems: "center", 
-        justifyContent: "center", 
-        marginTop: 15
+        justifyContent: "center",
+        marginRight: 5
     },
 
     fontMyAvatar: {
-        color: 'grey',
-        fontWeight: "bold" 
-        // fontSize: 10
+        color: '#fff',
+        fontWeight: "bold", 
+        fontSize: 18
     },
 })
