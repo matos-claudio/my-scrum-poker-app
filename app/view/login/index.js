@@ -11,6 +11,10 @@ export default class Login extends Component {
         super(props)
     }
 
+    signup = () => {
+        this.props.navigation.navigate('Signup')
+    }
+
     render() {
         return (
             <View style={globalStyle.container}>
@@ -31,7 +35,7 @@ export default class Login extends Component {
                             </TouchableOpacity>
                             <View style={style.viewButtonSignup}>
                                 <Text style={style.labelSignup}>Não possui uma conta? </Text>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={() => this.signup()}>
                                     <Text style={style.labelButtonSignup}>Cadastre-se</Text>
                                 </TouchableOpacity>
                             </View>

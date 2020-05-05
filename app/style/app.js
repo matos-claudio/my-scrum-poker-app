@@ -22,5 +22,20 @@ export default globalStyle = StyleSheet.create({
         marginLeft: 10,
         color: '#000',
         fontWeight: "bold"
-    }
+    },
+    viewAvatar: {
+        width: 60, 
+        height: 60, 
+        backgroundColor: '#FFDA1A', 
+        borderRadius: 80 / 2, 
+        alignItems: "center", 
+        justifyContent: "center", 
+        marginTop: 15
+    },
+
+    fontMyAvatar: {
+        color: 'grey',
+        fontWeight: "bold" 
+        // fontSize: 10
+    },
 })

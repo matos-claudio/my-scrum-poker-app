@@ -1,33 +1,23 @@
-// import React from 'react';
-// import { StyleSheet, Text, View } from 'react-native';
-
-// export default function App() {
-//   return (
-//     <View style={styles.container}>
-//       <Text>Open up App.js to start working on your app!!</Text>
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-
-// });
-
 import { createAppContainer } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 import Login from './app/view/login'
+import Signup from './app/view/signup'
+import Poker from './app/view/poker'
 
 console.disableYellowBox = true
 
 const routes = createStackNavigator({
+  Poker: {
+    screen: Poker
+  },
+  Signup: {
+    screen: Signup
+  },
   Login: {
     screen: Login
+  },
+  Signup: {
+    screen: Signup
   }
 }, { headerMode: "null" })
 
