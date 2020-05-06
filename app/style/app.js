@@ -12,7 +12,7 @@ export default globalStyle = StyleSheet.create({
         justifyContent: "space-between",
         marginTop: Platform.OS == "ios" ? 0 : 35,
         marginBottom: Platform.OS == "ios" ? 10 : 0,
-        marginHorizontal: 15,
+        // marginHorizontal: 15,
         // backgroundColor: 'red'
     }, 
     buttonHeaderComponent: {
@@ -32,7 +32,8 @@ export default globalStyle = StyleSheet.create({
         borderRadius: 60 / 2, 
         alignItems: "center", 
         justifyContent: "center",
-        marginRight: 5
+        marginRight: 5,
+        marginBottom: 5
     },
 
     fontMyAvatar: {

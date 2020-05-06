@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, Text } from 'native-base'
 import globalStyle from '../../style/app'
 
-export default class AvatarComponent extends Component {
+export default class AvatarComponentWitchBadge extends Component {
     constructor(props){
         super(props)
     }
