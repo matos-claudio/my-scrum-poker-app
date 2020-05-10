@@ -21,7 +21,8 @@ export default class Poker extends Component {
         this.state = {
             date: '',
             members: [],
-            votes: []
+            votes: [],
+            modalIsVisible: false
         }
 
         this.socketConnect = this.socketConnect.bind(this)
@@ -68,7 +69,8 @@ export default class Poker extends Component {
         return (
             <View style={styles.container}>
                 <CardFlip style={styles.cardContainer} ref={(card) => this['card' + index] = card} >
-                    <TouchableOpacity style={styles.card} onPress={() => this['card' + index].flip()} >
+                    {/* <TouchableOpacity style={styles.card} onPress={() => this['card' + index].flip()} > */}
+                    <TouchableOpacity style={styles.card} onPress={() => this.setState({modalIsVisible: true})} >
                         <Text style={styles.label}>{item}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.card1} onPress={() => this['card' + index].flip()} >
@@ -130,7 +132,7 @@ export default class Poker extends Component {
                         <Modal
                             animationType="slide"
                             transparent={false}
-                            visible={true}
+                            visible={this.state.modalIsVisible}
                             onRequestClose={() => {
                                 Alert.alert('Modal has been closed.');
                             }}>

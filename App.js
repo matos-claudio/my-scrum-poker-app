@@ -7,6 +7,9 @@ import Poker from './app/view/poker'
 console.disableYellowBox = true
 
 const routes = createStackNavigator({
+  Login: {
+    screen: Login
+  },
   Poker: {
     screen: Poker
   },

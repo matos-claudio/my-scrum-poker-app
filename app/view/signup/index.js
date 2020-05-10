@@ -6,6 +6,7 @@ import style from './style'
 import HeaderComponent from '../components/HeaderComponent'
 import AvatarComponent from '../components/AvatarComponent'
 import { createNameAvatar } from '../../helper/helper'
+import Header from '../components/Header'
 
 const img = require('../../../assets/image.png')
 
@@ -44,7 +45,7 @@ export default class Signup extends Component {
         return (
             <View style={globalStyle.container}>
                 <Container>
-                    <HeaderComponent title={""} navigate={this.props.navigation} enableButton={true} />
+                    <Header title={""} navigate={this.props.navigation} enableButton={true} margin={15} />
                     <Content transparent contentContainerStyle={{ flexGrow: 1, marginHorizontal: 20 }}>
                         <View style={style.viewLogo}>
                             <Image source={img} resizeMode={"contain"} style={style.logo} />
@@ -54,20 +55,20 @@ export default class Signup extends Component {
                         <View style={style.viewFields}>
                             <TextInput style={style.textInput} autoCapitalize='none' placeholder="e-mail" onChangeText={(email) => this.setState({ email })} />
                             <TextInput style={[style.textInput, { marginTop: 10 }]} placeholder="nome" onChangeText={(name) => this.setState({ name })} onEndEditing={(name) => this.onBlurName(name)} />
-                            <TextInput style={[style.textInput, { marginTop: 10 }]} secureTextEntry={true} onChangeText={(password) => this.setState({ password })} placeholder="senha" />
-                            <TextInput style={[style.textInput, { marginTop: 10 }]} secureTextEntry={true} onChangeText={(confirmPassword) => this.setState({ confirmPassword })} placeholder="confirmação de senha" />
+                            <TextInput style={[style.textInput, { marginTop: 10 }]} autoCapitalize='none' secureTextEntry={true} onChangeText={(password) => this.setState({ password })} placeholder="senha" />
+                            <TextInput style={[style.textInput, { marginTop: 10 }]} autoCapitalize='none' secureTextEntry={true} onChangeText={(confirmPassword) => this.setState({ confirmPassword })} placeholder="confirmação de senha" />
                             {this.state.avatar && <AvatarComponent avatar={this.state.avatar} />}
                             {this.state.avatar && <Text style={style.fontMyAvatar}>Meu avatar</Text>}
                         </View>
                         <View style={style.viewButtons}>
-                            <TouchableOpacity style={style.buttonLogin} onPress={() => this.signUp()}>
+                            <TouchableOpacity style={globalStyle.primaryButton} onPress={() => this.signUp()}>
                                 {/* <ActivityIndicator color={"#fff"} size="small" /> */}
-                                <Text style={style.labelButtonLogin}>Cadastrar</Text>
+                                <Text style={globalStyle.primaryButtonLabel}>CADASTRAR</Text>
                             </TouchableOpacity>
                             <View style={style.viewButtonSignup}>
                                 <Text style={style.labelSignup}>Já possui uma conta? </Text>
-                                <TouchableOpacity>
-                                    <Text style={style.labelButtonSignup}>Login</Text>
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
+                                    <Text style={globalStyle.labelButtonLoginSignup}>Login</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>

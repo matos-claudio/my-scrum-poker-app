@@ -7,12 +7,13 @@ export default style = StyleSheet.create({
         alignItems: "center"
     },
     logo: {
-        width: 350, 
-        height: 250
+        width: 300, 
+        height: 200
     },
     fontTitle: {
         color: 'grey', 
-        fontWeight: "bold"
+        fontWeight: "bold",
+        opacity: 0.5
     },
 
     viewFields: {
@@ -37,7 +38,7 @@ export default style = StyleSheet.create({
     },
 
     buttonLogin: {
-        backgroundColor: '#FFDA1A', 
+        backgroundColor: '#6a1b9a', 
         height: 45, 
         justifyContent: "center", 
         borderRadius: 5 
@@ -46,7 +47,7 @@ export default style = StyleSheet.create({
     labelButtonLogin: {
         alignSelf: "center", 
         fontWeight: "bold", 
-        color: '#000'
+        color: '#fff'
     },
 
     viewButtonSignup: {
@@ -63,6 +64,6 @@ export default style = StyleSheet.create({
     labelButtonSignup: {
         alignSelf: "center", 
         fontWeight: "bold", 
-        color: '#1565c0'
+        color: '#e64a19'
     }
 })

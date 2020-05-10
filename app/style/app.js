@@ -41,4 +41,32 @@ export default globalStyle = StyleSheet.create({
         fontWeight: "bold", 
         fontSize: 18
     },
+
+    marginHorizontal: {
+        marginHorizontal: 20
+    },
+
+    primaryButton: {
+        backgroundColor: '#6a1b9a', 
+        height: 45, 
+        justifyContent: "center", 
+        borderRadius: 5 
+    },
+
+    primaryButtonLabel: {
+        alignSelf: "center", 
+        fontWeight: "bold", 
+        color: '#fff'        
+    },
+
+    logo: {
+        width: 300, 
+        height: 200
+    },
+
+    labelButtonLoginSignup: {
+        alignSelf: "center", 
+        fontWeight: "bold", 
+        color: '#e64a19'
+    }
 })

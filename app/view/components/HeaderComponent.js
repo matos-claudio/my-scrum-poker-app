@@ -10,12 +10,12 @@ export default class HeaderComponent extends Component {
     render() {
         return (
             <SafeAreaView>
-                <View style={[style.headerComponent, this.props.margin && {marginHorizontal: 20}]}>
+                <View style={[style.headerComponent, this.props.margin && { marginHorizontal: 20 }]}>
                     {/* <TouchableOpacity style={style.buttonHeaderComponent}> */}
                     <Text style={style.labelTitleHeaderComponent}>Olá, Cláudio</Text>
-                    <AvatarComponent avatar={"CM"}/>
+                    <AvatarComponent avatar={"CM"} />
                     {/* </TouchableOpacity> */}
-                    
+
                 </View>
             </SafeAreaView>
         )
