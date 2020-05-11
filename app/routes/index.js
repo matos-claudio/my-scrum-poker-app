@@ -1,10 +1,8 @@
 import { createAppContainer } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
-import Login from './app/view/login'
-import Signup from './app/view/signup'
-import Poker from './app/view/poker'
-
-console.disableYellowBox = true
+import Login from '../view/login'
+import Signup from '../view/signup'
+import Poker from '../view/poker'
 
 const routes = createStackNavigator({
   Login: {
@@ -16,9 +14,9 @@ const routes = createStackNavigator({
   Signup: {
     screen: Signup
   },
-  Login: {
-    screen: Login
-  },
+  // Login: {
+  //   screen: Login
+  // },
   Signup: {
     screen: Signup
   }

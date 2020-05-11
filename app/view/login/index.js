@@ -3,10 +3,12 @@ import { Container, Content, H3, View, Text, Input, H1 } from 'native-base'
 import { TouchableOpacity, ActivityIndicator, TextInput, Image } from 'react-native'
 import globalStyle from '../../style/app'
 import style from './style'
+import { authUser } from '../../store/actions/user'
+import { connect } from 'react-redux'
 
 const img = require('../../../assets/image.png')
 
-export default class Login extends Component {
+class Login extends Component {
     constructor(props) {
         super(props)
     }
@@ -46,3 +48,16 @@ export default class Login extends Component {
         )
     }
 }
+
+const mapStateToProps = ({userLogged}) => {
+    console.log(`USERMAPS... ${JSON.stringify(userLogged)}`)
+    return { isLoading: userLogged.isLoading }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onLogin: user => dispatch(authUser(user))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

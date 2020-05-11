@@ -7,6 +7,7 @@ import HeaderComponent from '../components/HeaderComponent'
 import AvatarComponent from '../components/AvatarComponent'
 import { createNameAvatar } from '../../helper/helper'
 import Header from '../components/Header'
+import SignupService from '../../service/signup'
 
 const img = require('../../../assets/image.png')
 
@@ -18,26 +19,41 @@ export default class Signup extends Component {
             name: '',
             email: '',
             password: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            isLoading: false
         }
+
+        this.signUpService = new SignupService()
     }
 
-    onBlurName = (text) => {
-        if (text.nativeEvent.text == '') {
-            alert('Preencha o campo Nome')
-        } else {
-            var initials = createNameAvatar(text)
-            this.setState({ avatar: initials })
-        }
-    }
+    // onBlurName = (text) => {
+    //     if (text.nativeEvent.text == '') {
+    //         alert('Preencha o campo Nome')
+    //     } else {
+    //         var initials = createNameAvatar(text)
+    //         this.setState({ avatar: initials })
+    //     }
+    // }
 
-    signUp = () => {
+    validateFields = () => {
         if (this.state.name == '' || this.state.email == '' || this.state.password == '' || this.state.confirmPassword == '') {
             Alert.alert('Ops', 'Preencha todos os campos')
         } else if (this.state.password != this.state.confirmPassword) {
             Alert.alert('Ops', 'As senhas digitadas não são iguais')
         } else {
+            this.signUp()
+        }
+    }
 
+    signUp = async () => {
+        try {
+            this.setState({ isLoading: true })
+            let data = { userEmail: this.state.email, userName: this.state.name, userPassword: this.state.password }
+            var result = await this.signUpService.signupServiceRequest(data)
+            this.setState({ isLoading: false })
+        } catch (error) {
+            Alert.alert('Ops', 'Erro ao realizar cadastro')
+            this.setState({ isLoading: false })
         }
     }
 
@@ -54,16 +70,14 @@ export default class Signup extends Component {
                         </View>
                         <View style={style.viewFields}>
                             <TextInput style={style.textInput} autoCapitalize='none' placeholder="e-mail" onChangeText={(email) => this.setState({ email })} />
-                            <TextInput style={[style.textInput, { marginTop: 10 }]} placeholder="nome" onChangeText={(name) => this.setState({ name })} onEndEditing={(name) => this.onBlurName(name)} />
+                            <TextInput style={[style.textInput, { marginTop: 10 }]} placeholder="nome" onChangeText={(name) => this.setState({ name })} />
                             <TextInput style={[style.textInput, { marginTop: 10 }]} autoCapitalize='none' secureTextEntry={true} onChangeText={(password) => this.setState({ password })} placeholder="senha" />
                             <TextInput style={[style.textInput, { marginTop: 10 }]} autoCapitalize='none' secureTextEntry={true} onChangeText={(confirmPassword) => this.setState({ confirmPassword })} placeholder="confirmação de senha" />
-                            {this.state.avatar && <AvatarComponent avatar={this.state.avatar} />}
-                            {this.state.avatar && <Text style={style.fontMyAvatar}>Meu avatar</Text>}
                         </View>
                         <View style={style.viewButtons}>
-                            <TouchableOpacity style={globalStyle.primaryButton} onPress={() => this.signUp()}>
-                                {/* <ActivityIndicator color={"#fff"} size="small" /> */}
-                                <Text style={globalStyle.primaryButtonLabel}>CADASTRAR</Text>
+                            <TouchableOpacity style={globalStyle.primaryButton} onPress={() => this.validateFields()}>
+                                {this.state.isLoading && <ActivityIndicator color={"#fff"} size="small" />}
+                                {!this.state.isLoading && <Text style={globalStyle.primaryButtonLabel}>CADASTRAR</Text>}
                             </TouchableOpacity>
                             <View style={style.viewButtonSignup}>
                                 <Text style={style.labelSignup}>Já possui uma conta? </Text>

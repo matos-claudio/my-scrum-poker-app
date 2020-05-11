@@ -1,28 +1,14 @@
-import { createAppContainer } from 'react-navigation'
-import { createStackNavigator } from 'react-navigation-stack'
-import Login from './app/view/login'
-import Signup from './app/view/signup'
-import Poker from './app/view/poker'
+import React from 'react'
+import { Provider } from 'react-redux'
+import App from './app/index';
+import storeConfig from './app/store/storeConfig'
 
-console.disableYellowBox = true
+const store = storeConfig()
 
-const routes = createStackNavigator({
-  Login: {
-    screen: Login
-  },
-  Poker: {
-    screen: Poker
-  },
-  Signup: {
-    screen: Signup
-  },
-  Login: {
-    screen: Login
-  },
-  Signup: {
-    screen: Signup
-  }
-}, { headerMode: "null" })
-
-const App = createAppContainer(routes)
-export default App
+export default () => {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  )
+}
