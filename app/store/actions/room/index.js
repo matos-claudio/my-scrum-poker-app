@@ -1,4 +1,5 @@
 import { USER_LOGGED_IN_ROOM, USER_LOGGED_OUT_ROOM, LOADING_AUTH_ROOM, AUTH_ROOM_LOADED } from '../../actions/room/actionTypes'
+import RoomService from '../../../service/room'
 
 export const loadingRoomAuth = () => {
     return { type: LOADING_AUTH_ROOM }
@@ -9,10 +10,11 @@ export const loadedRoomAuth = () => {
 }
 
 export const roomAuth = (data) => {
+    console.log(`DATAAAAAAA > ${JSON.stringify(data)}`)
     return async dispatch => {
         dispatch(loadingRoomAuth())
         try {
-            let authUser = await new LoginService().loginServiceRequest(data)
+            let authUser = await new RoomService().createOrLoginUserInTheRoom(data)
             console.log(`loggedInSucess ${JSON.stringify(authUser)}`)
             dispatch(roomAuthSuccess(authUser.data))
         } catch (error) {

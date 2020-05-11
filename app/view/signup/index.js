@@ -49,12 +49,17 @@ export default class Signup extends Component {
         try {
             this.setState({ isLoading: true })
             let data = { userEmail: this.state.email, userName: this.state.name, userPassword: this.state.password }
-            var result = await this.signUpService.signupServiceRequest(data)
+            await this.signUpService.signupServiceRequest(data)
             this.setState({ isLoading: false })
+            this.navigateToLogin()
         } catch (error) {
             Alert.alert('Ops', 'Erro ao realizar cadastro')
             this.setState({ isLoading: false })
         }
+    }
+
+    navigateToLogin = () => {
+        this.props.navigation.navigate('Login')
     }
 
     render() {
@@ -81,7 +86,7 @@ export default class Signup extends Component {
                             </TouchableOpacity>
                             <View style={style.viewButtonSignup}>
                                 <Text style={style.labelSignup}>Já possui uma conta? </Text>
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
+                                <TouchableOpacity onPress={() => this.navigateToLogin()}>
                                     <Text style={globalStyle.labelButtonLoginSignup}>Login</Text>
                                 </TouchableOpacity>
                             </View>

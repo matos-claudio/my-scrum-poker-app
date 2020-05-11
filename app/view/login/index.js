@@ -26,13 +26,13 @@ class Login extends Component {
     }
 
     componentDidUpdate = prevProps => {
-        console.log(`PrevProps >>> ${JSON.stringify(prevProps)}`)
-        console.log(`PROPS >>> ${JSON.stringify(this.props.user)}`)
         var loggedUser = this.props.user
-        if((!prevProps.isLoading) && (loggedUser.loggedInSucess)){
-            this.props.navigation.navigate('LoginRoom')
-        }else{
-            Alert.alert('Opsss', loggedUser.user.message)
+        if (loggedUser != null) {
+            if ((!prevProps.isLoading) && (loggedUser.loggedInSucess)) {
+                this.props.navigation.navigate('LoginRoom')
+            } else {
+                Alert.alert('Opsss', loggedUser.user.message)
+            }
         }
     }
 

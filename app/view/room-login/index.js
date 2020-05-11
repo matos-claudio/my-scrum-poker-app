@@ -4,6 +4,7 @@ import { TouchableOpacity, ActivityIndicator, TextInput, Image, Alert } from 're
 import globalStyle from '../../style/app'
 import style from './style'
 import HeaderComponent from '../components/HeaderComponent'
+import { createNameAvatar } from '../../helper/helper'
 
 import { roomAuth } from '../../store/actions/room'
 import { connect } from 'react-redux'
@@ -26,10 +27,9 @@ class LoginRoom extends Component {
     }
 
     validateFields = () => {
-        console.log(`FIELDS >>> ${this.state.office}`)
-        if(this.state.roomName == '' || this.state.roomPassword == ''){
+        if (this.state.roomName == '' || this.state.roomPassword == '') {
             Alert.alert('Ops', 'Preencha todos os campos')
-        } else if(this.state.office == 'NULL'){
+        } else if (this.state.office == 'NULL') {
             Alert.alert('Ops', 'Escolha o papel no time')
         } else {
             this.login()
@@ -37,7 +37,12 @@ class LoginRoom extends Component {
     }
 
     login = () => {
-        this.props.onLogin({ ...this.state })
+        var loggedUser = this.props.member.user
+        var data = {
+            room: { roomName: this.state.roomName, roomPassword: this.state.roomPassword, createdBy: loggedUser.data.userEmail },
+            member: { email: loggedUser.data.userEmail, name: loggedUser.data.userName, avatar: createNameAvatar(loggedUser.data.userName), office: this.state.office }
+        }
+        this.props.onLogin({ data })
     }
 
     render() {
@@ -56,7 +61,7 @@ class LoginRoom extends Component {
                             <TextInput value={this.state.roomPassword} onChangeText={(roomPassword) => this.setState({ roomPassword })} style={[style.textInput, { marginTop: 10 }]} autoCapitalize={"none"} placeholder="senha da sala" secureTextEntry={true} />
                             <Picker note mode="dropdown" style={style.picker} selectedValue={this.state.office} onValueChange={(itemValue, itemPosition) =>
                                 this.setState({ office: itemValue, choooseIndex: itemPosition })}>
-                                <Picker.Item label="Qual o seu papel no time?" value="NULL"/>    
+                                <Picker.Item label="Qual o seu papel no time?" value="NULL" />
                                 <Picker.Item label="Convidado" value="GU" />
                                 <Picker.Item label="Product Owner" value="PO" />
                                 <Picker.Item label="Scrum Master" value="SM" />
@@ -78,7 +83,7 @@ class LoginRoom extends Component {
 
 const mapStateToProps = (room) => {
     console.log(`ROOM MAPS... ${JSON.stringify(room)}`)
-    return { isLoading: room.roomLogged.isLoading, room: room.room }
+    return { isLoading: room.roomLogged.isLoading, room: room.room, member: room.userLogged.user }
 }
 
 const mapDispatchToProps = dispatch => {

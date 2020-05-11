@@ -68,5 +68,24 @@ export default globalStyle = StyleSheet.create({
         alignSelf: "center", 
         fontWeight: "bold", 
         color: '#e64a19'
-    }
+    },
+
+    avatarViewList: {
+        width: 50, 
+        height: 50, 
+        backgroundColor: '#fff', 
+        borderRadius: 60 / 2,
+        borderWidth: 3,
+        borderColor: 'grey', 
+        alignItems: "center", 
+        justifyContent: "center",
+        marginRight: 5,
+        marginBottom: 5
+    },
+
+    fontViewAvatar: {
+        color: 'grey',
+        fontWeight: "bold", 
+        fontSize: 18
+    },
 })
