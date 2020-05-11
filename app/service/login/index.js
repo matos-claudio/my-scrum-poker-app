@@ -7,6 +7,7 @@ export default class LoginService {
     }
 
     loginServiceRequest = async (data) => {
-        return await this.axiosConfig.makePostRequest(URL, data)
+        let FULL_URL = `${URL}/login/auth/`
+        return await this.axiosConfig.makePostRequest(FULL_URL, data)
     }
 }

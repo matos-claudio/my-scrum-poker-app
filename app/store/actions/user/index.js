@@ -14,12 +14,9 @@ export const authUser = (user) => {
         dispatch(loadingAuth())
         try {
             let authUser = await new LoginService().loginServiceRequest(user)
-            console.log(`loggedInSucess ${JSON.stringify(authUser)}`)
-            dispatch(authSuccess(authUser))
-            //dispatch(authLoaded())
+            dispatch(authSuccess(authUser.data))
         } catch (error) {
             dispatch(authError(error))
-            //dispatch(authLoaded())
         } finally {
             dispatch(authLoaded())
         }
@@ -27,11 +24,11 @@ export const authUser = (user) => {
 }
 
 export const authSuccess = (user) => {
-    return { type: USER_LOGGED_IN, payload: { data: user, loggedInSucess: true } }
+    return { type: USER_LOGGED_IN, payload: { user, loggedInSucess: true } }
 }
 
 export const authError = (error) => {
-    return { type: USER_LOGGED_IN, payload: { data: error, loggedInSucess: false } }
+    return { type: USER_LOGGED_IN, payload: { user: error, loggedInSucess: false } }
 }
 
 export const logout = () => {
