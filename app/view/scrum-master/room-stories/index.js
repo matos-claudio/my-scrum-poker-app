@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Flatlist, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { FlatList, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { List, ListItem, Container, Content, Right, Left, Body, Button, Thumbnail, Footer, View, Fab, IconNB } from 'native-base'
 import HeaderComponent from '../../components/HeaderComponent';
 import AvatarComponent from '../../components/AvatarComponent';
@@ -44,6 +44,14 @@ export default class ScrumMasterStoriesList extends Component {
         this.state = {
             active: false
         }
+
+        this.stories = []
+    }
+
+    componentWillMount = () => {
+        const loggedRoom = this.props.navigation.state.params.loggedRoom
+        this.stories = loggedRoom.room.data.stories.length > 0 ? loggedRoom.room.data.stories : []
+        console.log(`props>>> ${JSON.stringify(this.stories)}`)
     }
 
     render() {
@@ -51,28 +59,35 @@ export default class ScrumMasterStoriesList extends Component {
             <Container>
                 <HeaderComponent margin />
                 <Content style={{ flexGrow: 1 }}>
-                    <List>
-                        {datas.map((data, i) => {
+                    <FlatList
+                        data={this.stories}
+                        renderItem={({ item }) =>
+                            <ListItem thumbnail>
+                                <Left>
+                                    <AvatarListComponent avatar={item.points.historyPoints || "..."} />
+                                </Left>
+                                <Body>
+                                    <Text style={style.title}>{item.historyNumber}</Text>
+                                    <Text numberOfLines={1} note style={style.note}>
+                                        {item.description}
+                                    </Text>
+                                </Body>
+                                <Right>
+                                    <TouchableOpacity transparent>
+                                        <Text style={style.labelButton}>Visualizar</Text>
+                                    </TouchableOpacity>
+                                </Right>
+                            </ListItem>
+                        }
+                        keyExtractor={item => item._id}
+                        ListEmptyComponent={() => {
                             return (
-                                <ListItem key={i} thumbnail>
-                                    <Left>
-                                        <AvatarListComponent avatar={"8"}/>
-                                    </Left>
-                                    <Body>
-                                        <Text style={style.title}>{data.text}</Text>
-                                        <Text numberOfLines={1} note style={style.note}>
-                                            {data.note}
-                                        </Text>
-                                    </Body>
-                                    <Right>
-                                        <TouchableOpacity transparent>
-                                            <Text style={style.labelButton}>Visualizar</Text>
-                                        </TouchableOpacity>
-                                    </Right>
-                                </ListItem>
+                                <View style={{ alignItems: "center", alignContent: "center" }}>
+                                    <ActivityIndicator size={"small"} color={"#6a1b9a"} />
+                                    <Text style={style.labelAwait}>Aguarde enquanto o Scrum Master cadastra a história.</Text>
+                                </View>
                             )
-                        })}
-                    </List>
+                        }} />
                 </Content>
                 <View style={{ height: 100 }}>
                     <Fab
@@ -132,10 +147,10 @@ const style = StyleSheet.create({
         fontWeight: "bold"
     },
     viewFooter: {
-        flex: 1, 
-        flexDirection: 'row', 
-        alignItems: "center", 
-        justifyContent: "flex-end", 
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: "center",
+        justifyContent: "flex-end",
         marginHorizontal: 15
     }
 })

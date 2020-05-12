@@ -21,7 +21,6 @@ export default class RoomService {
                 }
             ]
         }
-        console.log(`CREATEDROOM >>> ${JSON.stringify(createRoom)}`)
         var FULL_URL = `${URL}/room/createRoom/`
         return await this.axiosConfig.makePostRequest(FULL_URL, createRoom)
     }

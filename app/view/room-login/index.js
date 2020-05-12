@@ -15,15 +15,31 @@ class LoginRoom extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            roomName: '',
-            roomPassword: '',
-            office: 'NULL'
+            roomName: 'Sprint 01 - Maio',
+            roomPassword: '1234DX',
+            office: 'SM'
         }
     }
 
-    componentDidUpdate = prevProps => {
-        console.log(`PrevProps >>> ${JSON.stringify(prevProps)}`)
-        console.log(`PROPS >>> ${JSON.stringify(this.props.user)}`)
+    componentDidUpdate = () => {
+        var loggedRoom = this.props.roomLogged
+        
+        if (loggedRoom != null) {
+            var loggedUser = this.props.userLogged.user
+            console.log(`loggedRoom>>> ${JSON.stringify(loggedRoom)}`)
+            var user = this.searchUseRole(loggedRoom, loggedUser.data.userEmail)
+            if (user.office == 'SM') {
+                this.props.navigation.navigate('ScrumMasterStoriesList', params = { loggedRoom })
+            } else if (user.office == 'TD'){
+                this.props.navigation.navigate('TeamDevStoriesList')
+            } else {
+                Alert.alert(':)', 'P.O')
+            }
+        }
+    }
+
+    searchUseRole = (loggedRoom, userEmail) => {
+        return loggedRoom.room.data.members.find(m => m.email == userEmail)
     }
 
     validateFields = () => {
@@ -37,7 +53,7 @@ class LoginRoom extends Component {
     }
 
     login = () => {
-        var loggedUser = this.props.member.user
+        var loggedUser = this.props.userLogged.user
         var data = {
             room: { roomName: this.state.roomName, roomPassword: this.state.roomPassword, createdBy: loggedUser.data.userEmail },
             member: { email: loggedUser.data.userEmail, name: loggedUser.data.userName, avatar: createNameAvatar(loggedUser.data.userName), office: this.state.office }
@@ -81,9 +97,10 @@ class LoginRoom extends Component {
     }
 }
 
-const mapStateToProps = (room) => {
-    console.log(`ROOM MAPS... ${JSON.stringify(room)}`)
-    return { isLoading: room.roomLogged.isLoading, room: room.room, member: room.userLogged.user }
+const mapStateToProps = ({ userLogged, roomLogged }) => {
+    console.log(`USERLOGGED >>> ${JSON.stringify(userLogged)}`)
+    console.log(`ROOMLOGGED >>> ${JSON.stringify(roomLogged)}`)
+   return { isLoading: roomLogged.isLoading, roomLogged: roomLogged.room, userLogged: userLogged.user }
 }
 
 const mapDispatchToProps = dispatch => {

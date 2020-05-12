@@ -10,12 +10,10 @@ export const loadedRoomAuth = () => {
 }
 
 export const roomAuth = (data) => {
-    console.log(`DATAAAAAAA > ${JSON.stringify(data)}`)
     return async dispatch => {
         dispatch(loadingRoomAuth())
         try {
             let authUser = await new RoomService().createOrLoginUserInTheRoom(data)
-            console.log(`loggedInSucess ${JSON.stringify(authUser)}`)
             dispatch(roomAuthSuccess(authUser.data))
         } catch (error) {
             dispatch(roomAuthError(error))
@@ -34,7 +32,5 @@ export const roomAuthError = (error) => {
 }
 
 export const logout = () => {
-    return {
-        type: USER_LOGGED_OUT_ROOM
-    }
+    return { type: USER_LOGGED_OUT_ROOM }
 }
