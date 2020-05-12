@@ -24,4 +24,10 @@ export default class RoomService {
         var FULL_URL = `${URL}/room/createRoom/`
         return await this.axiosConfig.makePostRequest(FULL_URL, createRoom)
     }
+
+    createStorieInTheRoom = async (request) => {
+        var roomId = request.roomId
+        var FULL_URL = `${URL}/room/insertHistoryForScore/${roomId}`
+        return await this.axiosConfig.makePutRequest(FULL_URL, request)
+    }
 }

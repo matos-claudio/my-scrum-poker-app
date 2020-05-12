@@ -29,7 +29,7 @@ class LoginRoom extends Component {
             console.log(`loggedRoom>>> ${JSON.stringify(loggedRoom)}`)
             var user = this.searchUseRole(loggedRoom, loggedUser.data.userEmail)
             if (user.office == 'SM') {
-                this.props.navigation.navigate('ScrumMasterStoriesList', params = { loggedRoom })
+                this.props.navigation.navigate('ScrumMasterStoriesList', params = { loggedRoom, loggedUser })
             } else if (user.office == 'TD'){
                 this.props.navigation.navigate('TeamDevStoriesList')
             } else {

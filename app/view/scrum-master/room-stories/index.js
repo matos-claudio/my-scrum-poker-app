@@ -1,42 +1,10 @@
 import React, { Component } from 'react'
 import { FlatList, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { List, ListItem, Container, Content, Right, Left, Body, Button, Thumbnail, Footer, View, Fab, IconNB } from 'native-base'
+import { ListItem, Container, Content, Right, Left, Body, Button, Footer, View, Fab, IconNB } from 'native-base'
 import HeaderComponent from '../../components/HeaderComponent';
 import AvatarComponent from '../../components/AvatarComponent';
 import AvatarListComponent from '../../components/AvatarListComponent';
 
-const datas = [
-    {
-        // img: sankhadeep,
-        text: "Sankhadeep",
-        note: "Its time to build a difference . ."
-    },
-    {
-        // img: supriya,
-        text: "Supriya",
-        note: "One needs courage to be happy and smiling all time . . "
-    },
-    {
-        // img: shivraj,
-        text: "Shivraj",
-        note: "Time changes everything . ."
-    },
-    {
-        // img: shruti,
-        text: "Shruti",
-        note: "The biggest risk is a missed opportunity !!"
-    },
-    {
-        // img: himanshu,
-        text: "Himanshu",
-        note: "Live a life style that matchs your vision"
-    },
-    {
-        // img: shweta,
-        text: "Shweta",
-        note: "Failure is temporary, giving up makes it permanent"
-    }
-];
 
 export default class ScrumMasterStoriesList extends Component {
     constructor(props) {
@@ -51,7 +19,14 @@ export default class ScrumMasterStoriesList extends Component {
     componentWillMount = () => {
         const loggedRoom = this.props.navigation.state.params.loggedRoom
         this.stories = loggedRoom.room.data.stories.length > 0 ? loggedRoom.room.data.stories : []
-        console.log(`props>>> ${JSON.stringify(this.stories)}`)
+        this.roomId = loggedRoom.room.data._id
+        this.loggedUser = this.props.navigation.state.params.loggedUser
+
+        console.log(`HISTORIES >>> ${JSON.stringify(this.stories)}`)
+    }
+
+    navigateToNewStorie = () => {
+        this.props.navigation.navigate('CreateStorie', params = { roomId: this.roomId, user: this.loggedUser })
     }
 
     render() {
@@ -96,17 +71,8 @@ export default class ScrumMasterStoriesList extends Component {
                         containerStyle={{}}
                         style={{ backgroundColor: "#6a1b9a" }}
                         position="bottomRight"
-                        onPress={() => this.setState({ active: !this.state.active })}>
+                        onPress={() => this.navigateToNewStorie()}>
                         <IconNB name="md-add" />
-                        <Button style={{ backgroundColor: "#34A34F" }}>
-                            <IconNB name="logo-whatsapp" />
-                        </Button>
-                        <Button style={{ backgroundColor: "#3B5998" }}>
-                            <IconNB name="logo-facebook" />
-                        </Button>
-                        <Button disabled style={{ backgroundColor: "#DD5144" }}>
-                            <IconNB name="ios-mail" />
-                        </Button>
                     </Fab>
                 </View>
                 <Footer style={style.footer}>

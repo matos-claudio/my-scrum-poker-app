@@ -11,6 +11,7 @@ export default class AxiosConfig {
         return await axios(config)
     }
     makePutRequest = async (url, data) => {
-
+        const config = { method: 'PUT', url, data }
+        return await axios(config)
     }
 }

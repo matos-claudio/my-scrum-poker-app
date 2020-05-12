@@ -16,6 +16,7 @@ const reducer = (state = initialState, action) => {
         case LOADING_AUTH:
             return {
                 ...state,
+                isLoading: true
             }
 
         case AUTH_LOADED:

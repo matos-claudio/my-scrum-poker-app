@@ -25,10 +25,10 @@ class Login extends Component {
         this.props.navigation.navigate('Signup')
     }
 
-    componentDidUpdate = prevProps => {
+    componentDidUpdate = () => {
         var loggedUser = this.props.user
         if (loggedUser != null) {
-            if ((!prevProps.isLoading) && (loggedUser.loggedInSucess)) {
+            if (loggedUser.loggedInSucess) {
                 this.props.navigation.navigate('LoginRoom')
             } else {
                 Alert.alert('Opsss', loggedUser.user.message)

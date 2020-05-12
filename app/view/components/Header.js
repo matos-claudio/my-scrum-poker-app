@@ -6,7 +6,6 @@ import { Ionicons } from '@expo/vector-icons';
 export default class Header extends Component {
     constructor(props){
         super(props)
-        console.log(`NAV ${JSON.stringify(props)}`)
     }
     render() {
         return (
@@ -14,7 +13,6 @@ export default class Header extends Component {
                 <View style={[style.headerComponent, this.props.margin && { marginHorizontal: 20 }]}>
                     <TouchableOpacity style={style.buttonHeaderComponent} onPress={() => this.props.navigate.goBack()}>
                         <Ionicons name={"md-arrow-back"} size={24} />
-                        {/* <Icon name= {"md-checkmark-circle"} size={24}/> */}
                         <Text style={style.labelTitleHeaderComponent}>{this.props.title}</Text>
                     </TouchableOpacity>
                 </View>
