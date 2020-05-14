@@ -12,7 +12,7 @@ import { createNameAvatar } from '../../helper/helper'
 
 
 
-const cards = [0, 1, 2, 3, 5, 8, 13, 21]
+const cards = [0, 1, 2, 3, 5, 8, 13, 21, '?']
 
 export default class Poker extends Component {
     constructor(props) {
