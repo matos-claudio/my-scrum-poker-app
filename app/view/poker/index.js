@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import globalStyle from '../../style/app'
-import { View, Container, Content, H1 } from 'native-base'
+import { View, Container, Content, H1, H3 } from 'native-base'
 import { TouchableOpacity, Text, FlatList, StyleSheet, Modal, TouchableHighlight } from 'react-native'
 import CardFlip from 'react-native-card-flip';
 import socketIOClient from "socket.io-client";
@@ -22,7 +22,8 @@ export default class Poker extends Component {
             date: '',
             members: [],
             votes: [],
-            modalIsVisible: false
+            modalIsVisible: false,
+            vote: ''
         }
 
         this.socketConnect = this.socketConnect.bind(this)
@@ -70,7 +71,7 @@ export default class Poker extends Component {
             <View style={styles.container}>
                 <CardFlip style={styles.cardContainer} ref={(card) => this['card' + index] = card} >
                     {/* <TouchableOpacity style={styles.card} onPress={() => this['card' + index].flip()} > */}
-                    <TouchableOpacity style={styles.card} onPress={() => this.setState({modalIsVisible: true})} >
+                    <TouchableOpacity style={styles.card} onPress={() => this.setState({ modalIsVisible: true })} >
                         <Text style={styles.label}>{item}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.card1} onPress={() => this['card' + index].flip()} >
@@ -95,84 +96,98 @@ export default class Poker extends Component {
         )
     }
 
+    renderVote = (item) => {
+        this.setState({ modalIsVisible: true, vote: item })
+    }
+
     render() {
         return (
             <View style={globalStyle.container}>
                 <HeaderComponent margin />
-                <Container style={{ backgroundColor: '#fff' }}>
+                <Container>
                     <Content transparent contentContainerStyle={{ flexGrow: 1, marginHorizontal: 20 }}>
                         <View style={{ flex: 1, marginHorizontal: 10, justifyContent: "center" }}>
-                            <H1 style={{ color: 'grey', fontWeight: "bold" }}>0001</H1>
-                            <Text style={{ color: 'grey' }}>Verificar uptime das aplicações</Text>
+                            <H3 style={{ color: 'grey', fontWeight: "bold" }}>SALA DX 001</H3>
                         </View>
-                        <View style={{ height: 500, minHeight: 400 }}>
-                            <FlatList
-                                data={cards}
-                                numColumns={3}
-                                renderItem={this.renderItem}
-                            />
-                        </View>
-                        <View style={{ flex: 2, backgroundColor: '#fff', marginTop: 1, padding: 10, marginHorizontal: 10 }}>
-                            <Text style={{ color: 'grey', fontWeight: "bold", fontSize: 12 }}>Time Scrum</Text>
+                        <FlatList
+                            data={cards}
+                            numColumns={3}
+                            renderItem={({ item, index }) =>
+                                <View style={styles.container}>
+                                    <CardFlip style={styles.cardContainer} ref={(card) => this['card' + index] = card} >
+                                        <TouchableOpacity style={styles.card} onPress={() => this.renderVote(item)} >
+                                            <Text style={styles.label}>{item}</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={styles.card1} onPress={() => this['card' + index].flip()} >
+                                            <Text style={styles.label}>{item}</Text>
+                                        </TouchableOpacity>
+                                    </CardFlip>
+                                </View>
+                            }
+                        />
+                        <View style={{ flex: 2, backgroundColor: '#fff', marginTop: 1, padding: 10 }}>
+                            <Text style={{ color: 'grey', fontWeight: "bold", fontSize: 18 }}>Participantes nessa sala</Text>
                             <View style={{ marginTop: 5 }}>
                                 <FlatList
                                     data={this.state.members.members}
                                     numColumns={6}
-                                    renderItem={this.renderMembers}
+                                    renderItem={({ item }) =>
+                                        <AvatarComponent avatar={createNameAvatar(item.name)} />
+                                    }
                                     ListEmptyComponent={() => {
                                         return (
-                                            <Text>Nenhum membro online</Text>
+                                            <Text style={{ color: 'grey', fontWeight: "bold", fontSize: 12 }}>Nenhum participante online</Text>
                                         )
                                     }}
                                 />
                             </View>
                         </View>
                     </Content>
-                    <View>
-                        <Modal
-                            animationType="slide"
-                            transparent={false}
-                            visible={this.state.modalIsVisible}
-                            onRequestClose={() => {
-                                Alert.alert('Modal has been closed.');
-                            }}>
-                            <View style={{ flex: 1, marginHorizontal: 20 }}>
-                                <HeaderComponent />
-                                <View style={{ marginHorizontal: 10 }}>
-                                    <H1 style={{ color: 'grey', fontWeight: "bold" }}>0001</H1>
-                                    <Text style={{ color: 'grey' }}>Verificar uptime das aplicações</Text>
+                    <Modal
+                        animationType="slide"
+                        transparent={false}
+                        visible={this.state.modalIsVisible}
+                        onRequestClose={() => {
+                            Alert.alert('Modal has been closed.');
+                        }}>
+                        <View style={{ flex: 1, marginHorizontal: 15 }}>
+                            <HeaderComponent />
+                            <View style={{ marginHorizontal: 10 }}>
+                                <H3 style={{ color: 'grey', fontWeight: "bold" }}>SALA DX 001</H3>
+                            </View>
+                            <View style={{ flexDirection: "row", flex: 3, marginTop: 20 }}>
+                                <View style={{ flex: 1, marginLeft: 10, justifyContent: "center" }}>
+                                    <FlatList
+                                        data={this.state.votes.length > 0 ? this.state.votes : this.state.members.members}
+                                        numColumns={1}
+                                        renderItem={this.state.votes.length > 0 ? this.renderVotes : this.renderMembers}
+                                    />
                                 </View>
-                                <View style={{ flexDirection: "row", flex: 3, marginTop: 20 }}>
-                                    <View style={{ flex: 1, marginLeft: 10, justifyContent: "center" }}>
-                                        <FlatList
-                                            data={this.state.votes.length > 0 ? this.state.votes : this.state.members.members}
-                                            numColumns={1}
-                                            renderItem={this.state.votes.length > 0 ? this.renderVotes : this.renderMembers}
-                                        />
-                                        {/* <FlatList
-                                            data={this.state.votes}
-                                            numColumns={1}
-                                            renderItem={this.renderVotes}
-                                        /> */}
+                                <View style={{ flex: 3, justifyContent: "center" }}>
+                                    <View style={{
+                                        borderRadius: 10, backgroundColor: '#6a1b9a', width: 200, height: 250,
+                                        alignItems: "center", justifyContent: "center"
+                                    }}>
+                                        <Text style={{ color: '#fff', fontSize: 128, fontWeight: "bold" }}>{this.state.vote}</Text>
+                                        <Text style={{ color: '#fff', fontSize: 18, fontWeight: "bold" }}>seu voto</Text>
                                     </View>
-                                    <View style={{ flex: 3, justifyContent: "center" }}>
-                                        <View style={{
-                                            borderRadius: 10, backgroundColor: '#6a1b9a', width: 200, height: 250,
-                                            alignItems: "center", justifyContent: "center"
-                                        }}>
-                                            <Text style={{ color: '#fff', fontSize: 128, fontWeight: "bold" }}>5</Text>
-                                            <Text style={{ color: '#fff', fontSize: 18, fontWeight: "bold" }}>seu voto</Text>
-                                        </View>
-                                    </View>
-                                </View>
-                                <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-                                    {/* <Text style={{fontSize: 18, color: 'grey'}}>Aguarde a finalização da votação...</Text> */}
-                                    <Text style={{ color: 'grey', fontWeight: "bold" }}>Aguardando a finalização da votação...</Text>
+
                                 </View>
                             </View>
-                        </Modal>
-
-                    </View>
+                            <View style={{ flex: 1, justifyContent: "center" }}>
+                                <Text style={{ color: 'grey', fontWeight: "bold" }}>Aguardando a finalização da votação...</Text>
+                                <TouchableOpacity style={{
+                                    backgroundColor: '#6a1b9a',
+                                    height: 45,
+                                    justifyContent: "center",
+                                    borderRadius: 5,
+                                    marginTop: 10,
+                                }}>
+                                    <Text style={{ textAlign: "center", color: '#fff', fontWeight: "bold" }}>Finalizar</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
                 </Container>
             </View>
         )

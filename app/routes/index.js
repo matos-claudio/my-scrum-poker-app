@@ -9,9 +9,6 @@ import TeamDevStoriesList from '../view/room-team-dev/room-stories'
 import CreateStorie from '../view/scrum-master/room-create-storie'
 
 const routes = createStackNavigator({
-  Poker: {
-    screen: Poker
-  },
   Login: {
     screen: Login
   },

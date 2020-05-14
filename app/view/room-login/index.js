@@ -15,9 +15,9 @@ class LoginRoom extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            roomName: 'Sprint 01 - Maio',
-            roomPassword: '1234DX',
-            office: 'SM'
+            roomName: 'DX',
+            roomPassword: '1234',
+            office: 'NULL'
         }
     }
 
@@ -28,10 +28,13 @@ class LoginRoom extends Component {
             var loggedUser = this.props.userLogged.user
             console.log(`loggedRoom>>> ${JSON.stringify(loggedRoom)}`)
             var user = this.searchUseRole(loggedRoom, loggedUser.data.userEmail)
+
+            console.log(`USERRRRRRRRR>>> ${JSON.stringify(user)}`)
             if (user.office == 'SM') {
-                this.props.navigation.navigate('ScrumMasterStoriesList', params = { loggedRoom, loggedUser })
+                this.props.navigation.navigate('Poker', params = { loggedRoom, loggedUser })
             } else if (user.office == 'TD'){
-                this.props.navigation.navigate('TeamDevStoriesList')
+               // this.props.navigation.navigate('TeamDevStoriesList')
+                this.props.navigation.navigate('Poker', params = { loggedRoom, loggedUser })
             } else {
                 Alert.alert(':)', 'P.O')
             }
