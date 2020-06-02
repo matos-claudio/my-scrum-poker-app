@@ -15,8 +15,8 @@ class LoginRoom extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            roomName: 'DX',
-            roomPassword: '1234',
+            roomName: '',
+            roomPassword: '',
             office: 'NULL'
         }
     }
@@ -24,19 +24,16 @@ class LoginRoom extends Component {
     componentDidUpdate = () => {
         var loggedRoom = this.props.roomLogged
         
-        if (loggedRoom != null) {
+        if (loggedRoom != null && this.props.userLogged != null) {
             var loggedUser = this.props.userLogged.user
             console.log(`loggedRoom>>> ${JSON.stringify(loggedRoom)}`)
             var user = this.searchUseRole(loggedRoom, loggedUser.data.userEmail)
-
-            console.log(`USERRRRRRRRR>>> ${JSON.stringify(user)}`)
             if (user.office == 'SM') {
+                this.props.navigation.navigate('ScrumMasterStoriesList', params = { loggedRoom, loggedUser })
+            } else if (user.office  == 'TD'){
                 this.props.navigation.navigate('Poker', params = { loggedRoom, loggedUser })
-            } else if (user.office == 'TD'){
-               // this.props.navigation.navigate('TeamDevStoriesList')
-                this.props.navigation.navigate('Poker', params = { loggedRoom, loggedUser })
-            } else {
-                Alert.alert(':)', 'P.O')
+            } else if (user.office  == 'GU' || user.office  == 'PO') {
+                this.props.navigation.navigate('ProductOwnerStoriesList', params = { loggedRoom, loggedUser })
             }
         }
     }
@@ -68,7 +65,6 @@ class LoginRoom extends Component {
         return (
             <View style={globalStyle.container}>
                 <Container>
-                    <HeaderComponent margin />
                     <Content transparent contentContainerStyle={{ flexGrow: 1, marginHorizontal: 20 }}>
                         <View style={style.viewLogo}>
                             <Image source={img} resizeMode={"contain"} style={style.logo} />

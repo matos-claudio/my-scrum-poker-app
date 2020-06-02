@@ -7,8 +7,8 @@ export default style = StyleSheet.create({
         alignItems: "center"
     },
     logo: {
-        width: 300, 
-        height: 200
+        width: 280, 
+        height: 180
     },
     fontTitle: {
         color: 'grey', 

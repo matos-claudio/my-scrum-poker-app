@@ -9,14 +9,14 @@ import OnlineUsersComponent from '../../components/OnlineUsersComponent';
 import { connect } from 'react-redux'
 import RoomService from '../../../service/room';
 
-class ScrumMasterStoriesList extends Component {
+class ProductOwnerStoriesList extends Component {
     constructor(props) {
         super(props)
         this.state = {
             active: false,
             votes: [],
             members: [],
-            messageListMember: 'Libere a votação para o time.',
+            messageListMember: 'Aguardando a votação do time...',
             isAvailable: false,
             buttonText: ''
         }
@@ -45,9 +45,10 @@ class ScrumMasterStoriesList extends Component {
          })
     }
 
+
     findNameInMembers = (email) => {
         var result = this.state.members.members.find(member => member.email == email)
-        return result != null ? result.name : ''
+        return result.name
     }
 
     componentWillMount = () => {
@@ -58,26 +59,10 @@ class ScrumMasterStoriesList extends Component {
         var result = loggedRoom.room.data.stories.find(storie => storie.isCompleted == false)
         var isAvailable = result != undefined ? result.isAvailable : false
 
-        this.setState({isAvailable, buttonText: isAvailable ? 'Finalizar votação' : 'Liberar votação'})
+        this.setState({isAvailable})
         console.log(`SMLOGGED>>> ${JSON.stringify(loggedRoom)}`)
-    }
 
-    openVote = async () => {
-        try {
-            await this.roomService.openVotes(this.roomId)
-            this.setState({isAvailable: true, buttonText: 'Finalizar votação', messageListMember: 'Aguardando a votação do time...'})
-        } catch (error) {
-            Alert.alert('Ops', 'Erro ao abrir votação '+error)
-        }        
-    }
-
-    endVote = async () => {
-        try {
-            await this.roomService.endVotes(this.roomId)
-            this.setState({isAvailable: false, buttonText: 'Liberar votação', messageListMember: 'Libere a votação para o time.', votes: []})
-        } catch (error) {
-            Alert.alert('Ops', 'Erro ao encerrar votação '+error)
-        }  
+        
     }
 
     render() {
@@ -94,9 +79,6 @@ class ScrumMasterStoriesList extends Component {
                                 </Left>
                                 <Body>
                                     <Text style={style.title}>{this.findNameInMembers(item.member)}</Text>
-                                    {/* <Text numberOfLines={1} note style={style.note}>
-                                        {item.description}
-                                    </Text> */}
                                 </Body>
                             </ListItem>
                         }
@@ -112,13 +94,6 @@ class ScrumMasterStoriesList extends Component {
                 <View style={{ minHeight: 200, backgroundColor: 'grey' }}>  
                     <OnlineUsersComponent members={this.state.members.members}/>
                 </View>
-                <Footer style={style.footer}>
-                    <View style={{backgroundColor: "#6a1b9a", width: 150, height: 40, borderRadius: 20, alignSelf: "center", alignItems: "center"}}>
-                        <TouchableOpacity style={{flex: 1, justifyContent: "center"}} onPress={() => !this.state.isAvailable ? this.openVote() : this.endVote()}>
-                        <Text style={{color:'#fff', fontWeight: "bold"}}>{this.state.buttonText}</Text>
-                        </TouchableOpacity>
-                    </View>  
-                </Footer>
             </Container>
         )
     }
@@ -131,7 +106,7 @@ const mapStateToProps = ({ userLogged, roomLogged }) => {
 }
 
 
-export default connect(mapStateToProps)(ScrumMasterStoriesList)
+export default connect(mapStateToProps)(ProductOwnerStoriesList)
 
 const style = StyleSheet.create({
     title: {

@@ -5,6 +5,9 @@ export default globalStyle = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff'
     },
+    marginTop5: {
+        marginTop: 5
+    },
     headerComponent: {
         flexDirection: "row",
         minHeight: 50,
@@ -88,4 +91,22 @@ export default globalStyle = StyleSheet.create({
         fontWeight: "bold", 
         fontSize: 18
     },
+
+    viewUsersOnline: {
+        flex: 2,
+        backgroundColor: '#fff',
+        marginTop: 1, 
+        padding: 10
+    },
+    labelViewUsersOnline: {
+        color: 'grey', 
+        fontWeight: "bold", 
+        fontSize: 18
+    },
+
+    labelEmptyList: {
+        color: 'grey', 
+        fontWeight: "bold", 
+        fontSize: 12
+    }
 })

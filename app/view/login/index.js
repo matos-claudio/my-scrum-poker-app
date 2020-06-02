@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { Container, Content, H3, View, Text, H1 } from 'native-base'
-import { TouchableOpacity, ActivityIndicator, TextInput, Image, Alert } from 'react-native'
+import { TouchableOpacity, ActivityIndicator, TextInput, Image, Alert, AppState, Platform } from 'react-native'
 import globalStyle from '../../style/app'
 import style from './style'
-import { authUser } from '../../store/actions/user'
+import { authUser, logout } from '../../store/actions/user'
 import { connect } from 'react-redux'
+import RoomService from '../../service/room'
 
 const img = require('../../../assets/image.png')
 
@@ -12,8 +13,45 @@ class Login extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            userEmail: 'caupath16@gmail.com',
-            userPassword: '123'
+            userEmail: '',
+            userPassword: ''
+        }
+
+        this.roomService = new RoomService()
+    }
+
+    componentDidMount() {
+        AppState.addEventListener('change', this.handleAppStateChange);
+    }
+
+    componentWillUnmount(){
+        AppState.removeEventListener('change', this.handleAppStateChange)
+    }
+
+    handleAppStateChange = async (nextAppState) => {
+        console.log(`HANDLE >>> ${JSON.stringify(nextAppState)}`)
+        var room = this.props.room
+        var userLogged = this.props.user
+
+        if (nextAppState === 'inactive') {
+            this.disconnectRoomMember(room, userLogged)
+        }  
+        
+        if(Platform.OS == 'android'){
+            if (nextAppState === 'background') {
+                this.disconnectRoomMember(room, userLogged)
+            } 
+        }
+    }
+
+    disconnectRoomMember = async (roomLogged, userLogged) => {
+        try {
+            if(roomLogged != null){
+                await this.roomService.disconnectRoomMember({roomId: roomLogged.room.data._id, email: userLogged.user.data.userEmail})
+                this.props.onLogout()
+            }
+        } catch (error) {
+            alert('erro '+error)
         }
     }
 
@@ -68,12 +106,16 @@ class Login extends Component {
     }
 }
 
-const mapStateToProps = ({ userLogged }) => {
-    return { isLoading: userLogged.isLoading, user: userLogged.user }
+const mapStateToProps = ({ userLogged, roomLogged }) => {
+    console.log(`LOGADO>>> ${JSON.stringify(roomLogged)}`)
+    return { isLoading: userLogged.isLoading, user: userLogged.user, room: roomLogged.room }
 }
 
 const mapDispatchToProps = dispatch => {
-    return { onLogin: user => dispatch(authUser(user)) }
+    return { 
+        onLogin: user => dispatch(authUser(user)),
+        onLogout: () => dispatch(logout()) 
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login)

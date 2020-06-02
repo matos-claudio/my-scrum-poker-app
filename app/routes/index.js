@@ -7,6 +7,7 @@ import LoginRoom from '../view/room-login'
 import ScrumMasterStoriesList from '../view/scrum-master/room-stories'
 import TeamDevStoriesList from '../view/room-team-dev/room-stories'
 import CreateStorie from '../view/scrum-master/room-create-storie'
+import ProductOwnerStoriesList from '../view/product-owner/room-stories'
 
 const routes = createStackNavigator({
   Login: {
@@ -27,6 +28,11 @@ const routes = createStackNavigator({
   ScrumMasterStoriesList: {
     screen: ScrumMasterStoriesList
   },
+  
+  ProductOwnerStoriesList: {
+    screen: ProductOwnerStoriesList
+  },
+
   CreateStorie: {
     screen: CreateStorie
   },

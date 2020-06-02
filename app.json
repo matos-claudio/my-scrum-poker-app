@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "My Scrum App",
-    "slug": "MyScrumPoker",
+    "name": "Poker Planning",
+    "slug": "poker-planning",
     "platforms": [
       "ios",
       "android",
@@ -22,9 +22,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "br.com.scrum.poker",
+      "buildNumber": "1.0.0"
     },
     "sdkVersion": "37.0.0",
-    "description": ""
+    "description": "",
+    "android": {
+      "versionCode": 1,
+      "package": "br.com.scrum.poker"
+    }
   }
 }

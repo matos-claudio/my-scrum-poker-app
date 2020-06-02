@@ -1,20 +1,23 @@
 import React, { Component } from 'react'
 import globalStyle from '../../style/app'
 import { View, Container, Content, H1, H3 } from 'native-base'
-import { TouchableOpacity, Text, FlatList, StyleSheet, Modal, TouchableHighlight } from 'react-native'
+import { TouchableOpacity, Text, FlatList, StyleSheet, Modal, TouchableHighlight, Alert, AppState } from 'react-native'
 import CardFlip from 'react-native-card-flip';
 import socketIOClient from "socket.io-client";
 import HeaderComponent from '../components/HeaderComponent';
 import AvatarComponent from '../components/AvatarComponent';
 import AvatarComponentWitchBadge from '../components/AvatarComponentWitchBadge';
-const ENDPOINT = "http://192.168.100.75:3000";
+import { URL } from '../../service/config/constants'
 import { createNameAvatar } from '../../helper/helper'
-
+import OnlineUsersComponent from '../components/OnlineUsersComponent';
+import RoomService from '../../service/room';
+import { connect } from 'react-redux'
+import RoomNameComponent from '../components/RoomNameComponent';
 
 
 const cards = [0, 1, 2, 3, 5, 8, 13, 21, '?']
 
-export default class Poker extends Component {
+class Poker extends Component {
     constructor(props) {
         super(props)
 
@@ -23,16 +26,20 @@ export default class Poker extends Component {
             members: [],
             votes: [],
             modalIsVisible: false,
-            vote: ''
+            vote: '',
+            labelWaitingVorVotes: 'aguardando os votos dos demais...',
+            showButton: false
         }
 
         this.socketConnect = this.socketConnect.bind(this)
         this.socketConnect()
+        this.roomService = new RoomService()
     }
 
     socketConnect = () => {
-        // this.socket = SocketIOClient(BASE_URL, { query: { idAsapSocket: userId } })
-        this.socket = socketIOClient(ENDPOINT)
+       // this.socket = SocketIOClient(BASE_URL, { query: { idAsapSocket: userId } })
+        this.socket = socketIOClient(URL)
+        
         this.socket.on('connect', () => {
             console.log('Conectado ao socket...');
         })
@@ -46,40 +53,9 @@ export default class Poker extends Component {
         })
         this.socket.on('votesFromMembers', votes => {
             console.log(`VOTANDO ... ${JSON.stringify(votes)}`)
-            this.setState({ votes })
+            this.setState({ votes, labelWaitingVorVotes: 'votação finalizada', showButton: true })
         })
-    }
-
-    componentWillMount() {
-        // this.socket.on('votesFromMembers', votes => {
-        //     console.log(`votos ... ${JSON.stringify(votes)}`)
-        //     this.setState({ votes })
-        // })
-
-        // this.socket.on('onlineMembers', members => {
-        //     console.log(`membros logados... ${JSON.stringify(members.members)}`)
-        //     this.setState({ members })
-        // })
-        this.socket.on('onlineMembers', members => {
-            console.log(`membros logados... ${JSON.stringify(members.members)}`)
-            this.setState({ members })
-        })
-    }
-
-    renderItem = ({ item, index }) => {
-        return (
-            <View style={styles.container}>
-                <CardFlip style={styles.cardContainer} ref={(card) => this['card' + index] = card} >
-                    {/* <TouchableOpacity style={styles.card} onPress={() => this['card' + index].flip()} > */}
-                    <TouchableOpacity style={styles.card} onPress={() => this.setState({ modalIsVisible: true })} >
-                        <Text style={styles.label}>{item}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.card1} onPress={() => this['card' + index].flip()} >
-                        <Text style={styles.label}>{item}</Text>
-                    </TouchableOpacity>
-                </CardFlip>
-            </View>
-        )
+    
     }
 
     renderMembers = ({ item }) => {
@@ -96,24 +72,36 @@ export default class Poker extends Component {
         )
     }
 
-    renderVote = (item) => {
-        this.setState({ modalIsVisible: true, vote: item })
+    renderVote = async (item) => {
+        try {
+
+            var member = this.props.userLogged.user.data.userEmail
+            var historyNumber = '00001'
+            var score = item
+            var roomId = this.props.roomLogged.room.data._id
+            await this.roomService.insertHistoryPointValue({roomId, member, historyNumber, score})
+            this.setState({ modalIsVisible: true, vote: item })
+        } catch (error) {
+            Alert.alert('Ops', 'Espere até que o Scrum Master inicie a votação')
+        }
     }
+
+    keyExtractor = (item, index) => item
 
     render() {
         return (
             <View style={globalStyle.container}>
-                <HeaderComponent margin />
+                <HeaderComponent name={ this.props.userLogged.user != undefined ? this.props.userLogged.user.data.userName : ''} margin />
                 <Container>
                     <Content transparent contentContainerStyle={{ flexGrow: 1, marginHorizontal: 20 }}>
                         <View style={{ flex: 1, marginHorizontal: 10, justifyContent: "center" }}>
-                            <H3 style={{ color: 'grey', fontWeight: "bold" }}>SALA DX 001</H3>
+                            <RoomNameComponent roomName={this.props.roomLogged.room.data.roomName}/>
                         </View>
                         <FlatList
                             data={cards}
                             numColumns={3}
                             renderItem={({ item, index }) =>
-                                <View style={styles.container}>
+                                <View style={styles.container} key={index}>
                                     <CardFlip style={styles.cardContainer} ref={(card) => this['card' + index] = card} >
                                         <TouchableOpacity style={styles.card} onPress={() => this.renderVote(item)} >
                                             <Text style={styles.label}>{item}</Text>
@@ -124,24 +112,9 @@ export default class Poker extends Component {
                                     </CardFlip>
                                 </View>
                             }
+                            keyExtractor={this.keyExtractor}
                         />
-                        <View style={{ flex: 2, backgroundColor: '#fff', marginTop: 1, padding: 10 }}>
-                            <Text style={{ color: 'grey', fontWeight: "bold", fontSize: 18 }}>Participantes nessa sala</Text>
-                            <View style={{ marginTop: 5 }}>
-                                <FlatList
-                                    data={this.state.members.members}
-                                    numColumns={6}
-                                    renderItem={({ item }) =>
-                                        <AvatarComponent avatar={createNameAvatar(item.name)} />
-                                    }
-                                    ListEmptyComponent={() => {
-                                        return (
-                                            <Text style={{ color: 'grey', fontWeight: "bold", fontSize: 12 }}>Nenhum participante online</Text>
-                                        )
-                                    }}
-                                />
-                            </View>
-                        </View>
+                        <OnlineUsersComponent members={this.state.members.members}/>
                     </Content>
                     <Modal
                         animationType="slide"
@@ -151,9 +124,9 @@ export default class Poker extends Component {
                             Alert.alert('Modal has been closed.');
                         }}>
                         <View style={{ flex: 1, marginHorizontal: 15 }}>
-                            <HeaderComponent />
+                            <HeaderComponent name={this.props.userLogged.user != undefined ? this.props.userLogged.user.data.userName : ''} />
                             <View style={{ marginHorizontal: 10 }}>
-                                <H3 style={{ color: 'grey', fontWeight: "bold" }}>SALA DX 001</H3>
+                                <RoomNameComponent roomName={this.props.roomLogged.room.data.roomName}/>
                             </View>
                             <View style={{ flexDirection: "row", flex: 3, marginTop: 20 }}>
                                 <View style={{ flex: 1, marginLeft: 10, justifyContent: "center" }}>
@@ -166,25 +139,17 @@ export default class Poker extends Component {
                                 <View style={{ flex: 3, justifyContent: "center" }}>
                                     <View style={{
                                         borderRadius: 10, backgroundColor: '#6a1b9a', width: 200, height: 250,
-                                        alignItems: "center", justifyContent: "center"
-                                    }}>
+                                        alignItems: "center", justifyContent: "center" }}>
                                         <Text style={{ color: '#fff', fontSize: 128, fontWeight: "bold" }}>{this.state.vote}</Text>
                                         <Text style={{ color: '#fff', fontSize: 18, fontWeight: "bold" }}>seu voto</Text>
                                     </View>
-
                                 </View>
                             </View>
                             <View style={{ flex: 1, justifyContent: "center" }}>
-                                <Text style={{ color: 'grey', fontWeight: "bold" }}>Aguardando a finalização da votação...</Text>
-                                <TouchableOpacity style={{
-                                    backgroundColor: '#6a1b9a',
-                                    height: 45,
-                                    justifyContent: "center",
-                                    borderRadius: 5,
-                                    marginTop: 10,
-                                }}>
+                                <Text style={{ color: 'grey', fontWeight: "bold" }}>{this.state.labelWaitingVorVotes}</Text>
+                                {this.state.showButton && <TouchableOpacity style={styles.button} onPress={() => this.setState({modalIsVisible: false, votes: []})}>
                                     <Text style={{ textAlign: "center", color: '#fff', fontWeight: "bold" }}>Finalizar</Text>
-                                </TouchableOpacity>
+                                </TouchableOpacity>}
                             </View>
                         </View>
                     </Modal>
@@ -192,9 +157,19 @@ export default class Poker extends Component {
             </View>
         )
     }
-
-
 }
+
+const mapStateToProps = ({ userLogged, roomLogged }) => {
+    console.log(`POKERROOMUSER >>> ${JSON.stringify(userLogged)}`)
+    console.log(`POKERROOM >>> ${JSON.stringify(roomLogged)}`)
+
+
+    console.log(`USUARIOLOGADO >>> ${JSON.stringify(userLogged.user)}`)
+   return { isLoading: roomLogged.isLoading, roomLogged: roomLogged.room, userLogged: userLogged.user != null ? userLogged.user : '' }
+}
+
+
+export default connect(mapStateToProps)(Poker)
 
 const styles = StyleSheet.create({
     container: {
@@ -202,6 +177,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         // backgroundColor: '#F5FCFF',
+    },
+    button: {
+        backgroundColor: '#6a1b9a',
+        height: 45,
+        justifyContent: "center",
+        borderRadius: 5,
+        marginTop: 10,
     },
     cardContainer: {
         width: 100,

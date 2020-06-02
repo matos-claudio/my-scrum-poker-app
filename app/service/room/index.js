@@ -30,4 +30,27 @@ export default class RoomService {
         var FULL_URL = `${URL}/room/insertHistoryForScore/${roomId}`
         return await this.axiosConfig.makePutRequest(FULL_URL, request)
     }
+
+    insertHistoryPointValue = async (request) => {
+        console.log(`REQUEST >>> ${JSON.stringify(request)}`)
+        var roomId = request.roomId
+        var FULL_URL = `${URL}/room/insertHistoryPointValue/${roomId}`
+        return await this.axiosConfig.makePutRequest(FULL_URL, request)
+    }
+
+    openVotes = async (roomId) => {
+        var FULL_URL = `${URL}/room/openVotes/${roomId}`
+        return await this.axiosConfig.makePutRequest(FULL_URL, null)
+    }
+
+    endVotes = async (roomId) => {
+        var FULL_URL = `${URL}/room/endStoryPunctuation/${roomId}`
+        return await this.axiosConfig.makePutRequest(FULL_URL, null)
+    }
+
+    disconnectRoomMember = async (request) => {
+        var roomId = request.roomId
+        var FULL_URL = `${URL}/room/disconnectMember/${roomId}`
+        return await this.axiosConfig.makePutRequest(FULL_URL, request)
+    }
 }

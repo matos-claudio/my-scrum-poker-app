@@ -1,1 +1,1 @@
-export const URL = 'http://192.168.100.75:3000'
+export const URL = 'https://poker-planning-api-2.herokuapp.com'
