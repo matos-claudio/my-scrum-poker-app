@@ -53,4 +53,9 @@ export default class RoomService {
         var FULL_URL = `${URL}/room/disconnectMember/${roomId}`
         return await this.axiosConfig.makePutRequest(FULL_URL, request)
     }
+
+    forceConnectAndroidClient = async (request) => {
+        var FULL_URL = `${URL}/room/forceConnectAndroidClient/`
+        return await this.axiosConfig.makePostRequest(FULL_URL, request)
+    }
 }

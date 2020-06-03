@@ -3,9 +3,7 @@ import { Container, Content, H3, View, Text, H1, Picker } from 'native-base'
 import { TouchableOpacity, ActivityIndicator, TextInput, Image, Alert } from 'react-native'
 import globalStyle from '../../style/app'
 import style from './style'
-import HeaderComponent from '../components/HeaderComponent'
 import { createNameAvatar } from '../../helper/helper'
-
 import { roomAuth } from '../../store/actions/room'
 import { connect } from 'react-redux'
 
@@ -15,31 +13,24 @@ class LoginRoom extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            roomName: '',
-            roomPassword: '',
+            roomName: 'DX',
+            roomPassword: '1234',
             office: 'NULL'
         }
     }
 
     componentDidUpdate = () => {
         var loggedRoom = this.props.roomLogged
-        
         if (loggedRoom != null && this.props.userLogged != null) {
             var loggedUser = this.props.userLogged.user
-            console.log(`loggedRoom>>> ${JSON.stringify(loggedRoom)}`)
-            var user = this.searchUseRole(loggedRoom, loggedUser.data.userEmail)
-            if (user.office == 'SM') {
+            if (this.state.office == 'SM') {
                 this.props.navigation.navigate('ScrumMasterStoriesList', params = { loggedRoom, loggedUser })
-            } else if (user.office  == 'TD'){
+            } else if (this.state.office  == 'TD'){
                 this.props.navigation.navigate('Poker', params = { loggedRoom, loggedUser })
-            } else if (user.office  == 'GU' || user.office  == 'PO') {
+            } else if (this.state.office == 'GU' || this.state.office  == 'PO') {
                 this.props.navigation.navigate('ProductOwnerStoriesList', params = { loggedRoom, loggedUser })
             }
         }
-    }
-
-    searchUseRole = (loggedRoom, userEmail) => {
-        return loggedRoom.room.data.members.find(m => m.email == userEmail)
     }
 
     validateFields = () => {

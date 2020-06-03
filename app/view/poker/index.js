@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import globalStyle from '../../style/app'
 import { View, Container, Content, H1, H3 } from 'native-base'
-import { TouchableOpacity, Text, FlatList, StyleSheet, Modal, TouchableHighlight, Alert, AppState } from 'react-native'
+import { TouchableOpacity, Text, FlatList, StyleSheet, Modal, TouchableHighlight, Alert, AppState, Platform } from 'react-native'
 import CardFlip from 'react-native-card-flip';
 import socketIOClient from "socket.io-client";
 import HeaderComponent from '../components/HeaderComponent';
@@ -13,7 +13,6 @@ import OnlineUsersComponent from '../components/OnlineUsersComponent';
 import RoomService from '../../service/room';
 import { connect } from 'react-redux'
 import RoomNameComponent from '../components/RoomNameComponent';
-
 
 const cards = [0, 1, 2, 3, 5, 8, 13, 21, '?']
 
@@ -41,32 +40,37 @@ class Poker extends Component {
         this.socket = socketIOClient(URL)
         
         this.socket.on('connect', () => {
-            console.log('Conectado ao socket...');
+            console.log('Conectado ao socket >>>');
         })
+
         this.socket.on('FromAPI', data => {
             console.log(`consultando socket... ${data}`)
             this.setState({ date: data })
         })
         this.socket.on('onlineMembers', members => {
-            console.log(`membros logados... ${JSON.stringify(members.members)}`)
+            console.log(`membros logados... ${JSON.stringify(members)}`)
             this.setState({ members })
         })
         this.socket.on('votesFromMembers', votes => {
             console.log(`VOTANDO ... ${JSON.stringify(votes)}`)
             this.setState({ votes, labelWaitingVorVotes: 'votação finalizada', showButton: true })
         })
-    
+    }
+
+    componentDidMount = async () => {
+        if(Platform.OS === 'android'){
+            var roomId = this.props.roomLogged.room.data._id
+            await this.roomService.forceConnectAndroidClient({roomId})
+        }
     }
 
     renderMembers = ({ item }) => {
-        console.log(`LISTA >>> ${JSON.stringify(item)}`)
         return (
             <AvatarComponent avatar={createNameAvatar(item.name)} />
         )
     }
 
     renderVotes = ({ item }) => {
-        console.log(`ITEM >>> ${JSON.stringify(item)}`)
         return (
             <AvatarComponentWitchBadge avatar={item.avatar} score={item.score} />
         )
@@ -74,7 +78,6 @@ class Poker extends Component {
 
     renderVote = async (item) => {
         try {
-
             var member = this.props.userLogged.user.data.userEmail
             var historyNumber = '00001'
             var score = item
@@ -94,23 +97,21 @@ class Poker extends Component {
                 <HeaderComponent name={ this.props.userLogged.user != undefined ? this.props.userLogged.user.data.userName : ''} margin />
                 <Container>
                     <Content transparent contentContainerStyle={{ flexGrow: 1, marginHorizontal: 20 }}>
-                        <View style={{ flex: 1, marginHorizontal: 10, justifyContent: "center" }}>
-                            <RoomNameComponent roomName={this.props.roomLogged.room.data.roomName}/>
-                        </View>
+                        <RoomNameComponent roomName={this.props.roomLogged.room.data.roomName}/>
                         <FlatList
                             data={cards}
                             numColumns={3}
                             renderItem={({ item, index }) =>
-                                <View style={styles.container} key={index}>
-                                    <CardFlip style={styles.cardContainer} ref={(card) => this['card' + index] = card} >
-                                        <TouchableOpacity style={styles.card} onPress={() => this.renderVote(item)} >
-                                            <Text style={styles.label}>{item}</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={styles.card1} onPress={() => this['card' + index].flip()} >
-                                            <Text style={styles.label}>{item}</Text>
-                                        </TouchableOpacity>
-                                    </CardFlip>
-                                </View>
+                            <View style={styles.container} key={index}>
+                                <CardFlip style={styles.cardContainer} ref={(card) => this['card' + index] = card} >
+                                    <TouchableOpacity style={styles.card} onPress={() => this.renderVote(item)} >
+                                        <Text style={styles.label}>{item}</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.card1} onPress={() => this['card' + index].flip()} >
+                                        <Text style={styles.label}>{item}</Text>
+                                    </TouchableOpacity>
+                                </CardFlip>
+                            </View>
                             }
                             keyExtractor={this.keyExtractor}
                         />
@@ -125,9 +126,7 @@ class Poker extends Component {
                         }}>
                         <View style={{ flex: 1, marginHorizontal: 15 }}>
                             <HeaderComponent name={this.props.userLogged.user != undefined ? this.props.userLogged.user.data.userName : ''} />
-                            <View style={{ marginHorizontal: 10 }}>
-                                <RoomNameComponent roomName={this.props.roomLogged.room.data.roomName}/>
-                            </View>
+                            <RoomNameComponent roomName={this.props.roomLogged.room.data.roomName}/>
                             <View style={{ flexDirection: "row", flex: 3, marginTop: 20 }}>
                                 <View style={{ flex: 1, marginLeft: 10, justifyContent: "center" }}>
                                     <FlatList

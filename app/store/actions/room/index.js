@@ -45,6 +45,6 @@ export const requestError = (error) => {
     return { type: USER_LOGGED_IN_ROOM, payload: { room: error, loggedInSucess: false } }
 }
 
-export const logout = () => {
+export const roomLogout = () => {
     return { type: USER_LOGGED_OUT_ROOM }
 }

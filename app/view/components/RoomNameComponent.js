@@ -12,7 +12,8 @@ const RoomNameComponent = ({ roomName }) => {
 const styles = StyleSheet.create({
     h3: {
         color: "grey", 
-        fontWeight: "bold"
+        fontWeight: "bold",
+        marginLeft: 10
     }
 })
 

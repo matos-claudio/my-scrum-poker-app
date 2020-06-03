@@ -28,6 +28,12 @@ export default globalStyle = StyleSheet.create({
         color: '#000',
         fontWeight: "bold"
     },
+    labelSubtitleHeaderComponent: {
+       // fontSize: 22,
+        marginLeft: 10,
+       // color: '#000',
+        fontWeight: "bold"
+    },
     viewAvatar: {
         width: 50, 
         height: 50, 

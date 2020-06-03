@@ -4,6 +4,7 @@ import { TouchableOpacity, ActivityIndicator, TextInput, Image, Alert, AppState,
 import globalStyle from '../../style/app'
 import style from './style'
 import { authUser, logout } from '../../store/actions/user'
+import { roomLogout } from '../../store/actions/room'
 import { connect } from 'react-redux'
 import RoomService from '../../service/room'
 
@@ -13,11 +14,16 @@ class Login extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            userEmail: '',
-            userPassword: ''
+            userEmail: 'caupath16@gmail.com',
+            userPassword: '123'
         }
 
         this.roomService = new RoomService()
+    }
+
+    componentWillMount(){
+        this.props.onLogout()
+        this.props.onRoonLogout()
     }
 
     componentDidMount() {
@@ -114,7 +120,8 @@ const mapStateToProps = ({ userLogged, roomLogged }) => {
 const mapDispatchToProps = dispatch => {
     return { 
         onLogin: user => dispatch(authUser(user)),
-        onLogout: () => dispatch(logout()) 
+        onLogout: () => dispatch(logout()),
+        onRoonLogout: () => dispatch(roomLogout()) 
     }
 }
 

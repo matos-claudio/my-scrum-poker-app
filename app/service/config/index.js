@@ -1,7 +1,6 @@
 const axios = require('axios')
 
 export default class AxiosConfig {
-
     makeGetRequest = async (url) => {
         const config = { method: 'GET', url }
         return await axios(config)
