@@ -13,8 +13,8 @@ class LoginRoom extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            roomName: 'DX',
-            roomPassword: '1234',
+            roomName: '',
+            roomPassword: '',
             office: 'NULL'
         }
     }
