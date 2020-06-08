@@ -1,11 +1,8 @@
 import React, { Component } from 'react'
-import { Container, Content, H3, H1, View, Text, Input } from 'native-base'
+import { Container, Content, H1, View, Text } from 'native-base'
 import { TouchableOpacity, ActivityIndicator, TextInput, Image, Alert } from 'react-native'
 import globalStyle from '../../style/app'
 import style from './style'
-import HeaderComponent from '../components/HeaderComponent'
-import AvatarComponent from '../components/AvatarComponent'
-import { createNameAvatar } from '../../helper/helper'
 import Header from '../components/Header'
 import SignupService from '../../service/signup'
 
@@ -22,18 +19,8 @@ export default class Signup extends Component {
             confirmPassword: '',
             isLoading: false
         }
-
         this.signUpService = new SignupService()
     }
-
-    // onBlurName = (text) => {
-    //     if (text.nativeEvent.text == '') {
-    //         alert('Preencha o campo Nome')
-    //     } else {
-    //         var initials = createNameAvatar(text)
-    //         this.setState({ avatar: initials })
-    //     }
-    // }
 
     validateFields = () => {
         if (this.state.name == '' || this.state.email == '' || this.state.password == '' || this.state.confirmPassword == '') {

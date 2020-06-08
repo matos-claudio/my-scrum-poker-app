@@ -17,7 +17,6 @@ class Login extends Component {
             userEmail: '',
             userPassword: ''
         }
-
         this.roomService = new RoomService()
     }
 
@@ -41,13 +40,19 @@ class Login extends Component {
 
         if (nextAppState === 'inactive') {
             this.disconnectRoomMember(room, userLogged)
+            this.reloadApp()
         }  
         
         if(Platform.OS == 'android'){
             if (nextAppState === 'background') {
                 this.disconnectRoomMember(room, userLogged)
+                this.reloadApp()
             } 
         }
+    }
+
+    reloadApp = () => {
+        this.props.navigation.navigate('Login')
     }
 
     disconnectRoomMember = async (roomLogged, userLogged) => {
@@ -71,12 +76,13 @@ class Login extends Component {
 
     componentDidUpdate = () => {
         var loggedUser = this.props.user
-        if (loggedUser != null) {
-            if (loggedUser.loggedInSucess) {
-                this.props.navigation.navigate('LoginRoom')
-            } else {
-                Alert.alert('Opsss', loggedUser.user.message)
-            }
+        if (loggedUser != null && loggedUser.status == 200) {
+            this.props.navigation.navigate('LoginRoom')
+        } else if (loggedUser != null && loggedUser.status == 500){
+            this.props.onLogout()
+            Alert.alert('Ops :(', 'Não foi possível realizar o login.\nVerifique as informações e tente novamente')
+        }else {
+            this.props.onLogout()
         }
     }
 

@@ -14,6 +14,7 @@ export const roomAuth = (data) => {
         dispatch(loadingRoom())
         try {
             let result = await new RoomService().createOrLoginUserInTheRoom(data)
+            console.log(`resultRoomAuth >>> ${JSON.stringify(result)}`)
             dispatch(requestSuccess(result.data))
         } catch (error) {
             dispatch(requestError(error))
@@ -38,11 +39,11 @@ export const createStorieInTheRoom = (data) => {
 }
 
 export const requestSuccess = (room) => {
-    return { type: USER_LOGGED_IN_ROOM, payload: { room, loggedInSucess: true } }
+    return { type: USER_LOGGED_IN_ROOM, payload: { room, loggedInSucess: true, status: 200 } }
 }
 
 export const requestError = (error) => {
-    return { type: USER_LOGGED_IN_ROOM, payload: { room: error, loggedInSucess: false } }
+    return { type: USER_LOGGED_IN_ROOM, payload: { room: error, loggedInSucess: false, status: 500 } }
 }
 
 export const roomLogout = () => {

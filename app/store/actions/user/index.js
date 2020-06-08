@@ -24,11 +24,12 @@ export const authUser = (user) => {
 }
 
 export const authSuccess = (user) => {
-    return { type: USER_LOGGED_IN, payload: { user, loggedInSucess: true } }
+    return { type: USER_LOGGED_IN, payload: { user, loggedInSucess: true, status: 200 } }
 }
 
 export const authError = (error) => {
-    return { type: USER_LOGGED_IN, payload: { user: error, loggedInSucess: false } }
+    console.log(`errorLogin >>> ${JSON.stringify(error)}`)
+    return { type: USER_LOGGED_IN, payload: { user: error, status: 500, loggedInSucess: false } }
 }
 
 export const logout = () => {

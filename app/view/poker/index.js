@@ -58,10 +58,10 @@ class Poker extends Component {
     }
 
     componentDidMount = async () => {
-        if(Platform.OS === 'android'){
-            var roomId = this.props.roomLogged.room.data._id
-            await this.roomService.forceConnectAndroidClient({roomId})
-        }
+        // if(Platform.OS === 'android'){
+        var roomId = this.props.roomLogged.room.data._id
+        await this.roomService.forceConnectAndroidClient({roomId})
+        // }
     }
 
     renderMembers = ({ item }) => {
@@ -161,8 +161,6 @@ class Poker extends Component {
 const mapStateToProps = ({ userLogged, roomLogged }) => {
     console.log(`POKERROOMUSER >>> ${JSON.stringify(userLogged)}`)
     console.log(`POKERROOM >>> ${JSON.stringify(roomLogged)}`)
-
-
     console.log(`USUARIOLOGADO >>> ${JSON.stringify(userLogged.user)}`)
    return { isLoading: roomLogged.isLoading, roomLogged: roomLogged.room, userLogged: userLogged.user != null ? userLogged.user : '' }
 }

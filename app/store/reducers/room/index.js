@@ -27,7 +27,7 @@ const reducer = (state = initialState, action) => {
 
         case USER_LOGGED_OUT_ROOM:
             return {
-               // ...state,
+                ...state,
                 room: null
             }
         default: 

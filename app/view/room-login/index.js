@@ -4,7 +4,7 @@ import { TouchableOpacity, ActivityIndicator, TextInput, Image, Alert } from 're
 import globalStyle from '../../style/app'
 import style from './style'
 import { createNameAvatar } from '../../helper/helper'
-import { roomAuth } from '../../store/actions/room'
+import { roomAuth, roomLogout } from '../../store/actions/room'
 import { connect } from 'react-redux'
 
 const img = require('../../../assets/image.png')
@@ -19,9 +19,13 @@ class LoginRoom extends Component {
         }
     }
 
+    componentDidMount = () => {
+        this.props.onLogout()
+    } 
+
     componentDidUpdate = () => {
         var loggedRoom = this.props.roomLogged
-        if (loggedRoom != null && this.props.userLogged != null) {
+        if (loggedRoom != null && this.props.userLogged != null && loggedRoom.status == 200) {
             var loggedUser = this.props.userLogged.user
             if (this.state.office == 'SM') {
                 this.props.navigation.navigate('ScrumMasterStoriesList', params = { loggedRoom, loggedUser })
@@ -30,6 +34,11 @@ class LoginRoom extends Component {
             } else if (this.state.office == 'GU' || this.state.office  == 'PO') {
                 this.props.navigation.navigate('ProductOwnerStoriesList', params = { loggedRoom, loggedUser })
             }
+        } else if (loggedRoom != null && loggedRoom.status == 500) {
+            this.props.onLogout()
+            Alert.alert('Ops :(', 'Não foi possível realizar o login na sala.\nVerifique as informações e tente novamente')
+        } else {
+            this.props.onLogout()
         }
     }
 
@@ -94,7 +103,10 @@ const mapStateToProps = ({ userLogged, roomLogged }) => {
 }
 
 const mapDispatchToProps = dispatch => {
-    return { onLogin: room => dispatch(roomAuth(room)) }
+    return { 
+        onLogin: room => dispatch(roomAuth(room)),
+        onLogout: () => dispatch(roomLogout()) 
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginRoom)
