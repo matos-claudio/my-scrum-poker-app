@@ -109,7 +109,7 @@ class ScrumMasterStoriesList extends Component {
                             )
                         }} />
                 </Content>
-                <View style={{ minHeight: 200, backgroundColor: 'grey' }}>  
+                <View style={{ minHeight: 200 }}>  
                     <OnlineUsersComponent members={this.state.members.members}/>
                 </View>
                 <Footer style={style.footer}>

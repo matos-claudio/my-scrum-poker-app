@@ -9,7 +9,7 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/scrum-icon-13.png",
+    "icon": "./assets/icon-new.png",
     "splash": {
       "image": "./assets/image.png",
       "resizeMode": "contain",
@@ -24,12 +24,12 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "br.com.scrum.poker",
-      "buildNumber": "1.0.2"
+      "buildNumber": "1.0.3"
     },
     "sdkVersion": "37.0.0",
     "description": "",
     "android": {
-      "versionCode": 3,
+      "versionCode": 4,
       "package": "br.com.scrum.poker"
     }
   }

@@ -122,7 +122,7 @@ class Poker extends Component {
                         transparent={false}
                         visible={this.state.modalIsVisible}
                         onRequestClose={() => {
-                            Alert.alert('Modal has been closed.');
+                            //Alert.alert('Modal has been closed.');
                         }}>
                         <View style={{ flex: 1, marginHorizontal: 15 }}>
                             <HeaderComponent name={this.props.userLogged.user != undefined ? this.props.userLogged.user.data.userName : ''} />
