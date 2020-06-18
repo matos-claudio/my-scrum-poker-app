@@ -10,7 +10,7 @@ import RoomService from '../../service/room'
 
 const img = require('../../../assets/image.png')
 
-class Login extends Component {
+class Login_ extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -131,4 +131,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(Login_)

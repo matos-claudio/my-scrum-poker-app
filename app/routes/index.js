@@ -1,6 +1,5 @@
 import { createAppContainer } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
-import Login from '../view/login'
 import Signup from '../view/signup'
 import Poker from '../view/poker'
 import LoginRoom from '../view/room-login'
@@ -8,14 +7,19 @@ import ScrumMasterStoriesList from '../view/scrum-master/room-stories'
 import TeamDevStoriesList from '../view/room-team-dev/room-stories'
 import CreateStorie from '../view/scrum-master/room-create-storie'
 import ProductOwnerStoriesList from '../view/product-owner/room-stories'
-import ListaSala from '../view/lista-sala/lista-sala'
+import ListaSala from '../view/sala/lista-sala'
+import Login from '../view/login/login'
+import Menu from '../view/home/menu'
 
 const routes = createStackNavigator({
-  ListaSala: {
-    screen: ListaSala
+  Menu: {
+    screen: Menu
   },
   Login: {
     screen: Login
+  },
+  ListaSala: {
+    screen: ListaSala
   },
   LoginRoom : {
     screen: LoginRoom

@@ -19,6 +19,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import TransparentHeader from "../components/Header/TransparentHeader";
 import AvatarComponent from "../components/AvatarComponent";
 import { createNameAvatar } from "../../helper/helper";
+import FirebaseService from "../../service/firebase/firebase-service";
 
 const datas = [
   {
@@ -47,7 +48,23 @@ const datas = [
   },
 ];
 
+
 export default class ListaSala extends Component {
+
+  constructor(){
+    super()
+    this.firebaseService = new FirebaseService()
+  }  
+
+  componentDidMount = () => {
+    this.firebaseService.storeHighScore(1, 33)
+    this.firebaseService.setupHighscoreListener(1)
+  }
+
+  componentDidUpdate = () => {
+    this.firebaseService.setupHighscoreListener(1)
+  }
+    
   render() {
     return (
       <Container style={styles.container}>
@@ -63,11 +80,7 @@ export default class ListaSala extends Component {
               </View>
               <View style={styles.card}>
                 <View
-                  style={[
-                    styles.padding,
-                    { justifyContent: "space-between", flex: 1 },
-                  ]}
-                >
+                  style={[styles.padding, { justifyContent: "space-between", flex: 1 },]}>
                   <Text style={[styles.h2, styles.font18, styles.labelGrey]}>
                     Equipe Arq3 DX
                   </Text>
@@ -159,7 +172,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     flex: 1,
     position: "absolute",
-    top: 110,
+    top: 80,
     borderRadius: 15,
     shadowColor: "#616161",
     shadowOffset: { width: 5, height: 4 },
