@@ -8,8 +8,12 @@ import ScrumMasterStoriesList from '../view/scrum-master/room-stories'
 import TeamDevStoriesList from '../view/room-team-dev/room-stories'
 import CreateStorie from '../view/scrum-master/room-create-storie'
 import ProductOwnerStoriesList from '../view/product-owner/room-stories'
+import ListaSala from '../view/lista-sala/lista-sala'
 
 const routes = createStackNavigator({
+  ListaSala: {
+    screen: ListaSala
+  },
   Login: {
     screen: Login
   },

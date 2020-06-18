@@ -10,13 +10,10 @@ export default globalStyle = StyleSheet.create({
     },
     headerComponent: {
         flexDirection: "row",
-        minHeight: 50,
+        minHeight: 10,
         alignItems: "center",
-        justifyContent: "space-between",
-        marginTop: Platform.OS == "ios" ? 0 : 35,
-        marginBottom: Platform.OS == "ios" ? 10 : 0,
-        // marginHorizontal: 15,
-        // backgroundColor: 'red'
+        justifyContent: "flex-end",
+        marginTop: Platform.OS == "ios" ? 0 : 10,
     }, 
     buttonHeaderComponent: {
         flexDirection: "row",
@@ -35,14 +32,15 @@ export default globalStyle = StyleSheet.create({
         fontWeight: "bold"
     },
     viewAvatar: {
-        width: 50, 
-        height: 50, 
+        width: 45, 
+        height: 45, 
         backgroundColor: '#e64a19', 
         borderRadius: 60 / 2, 
         alignItems: "center", 
         justifyContent: "center",
-        marginRight: 5,
-        marginBottom: 5
+        marginRight: 15,
+        borderWidth: 2,
+        borderColor: '#FFF'
     },
 
     fontMyAvatar: {

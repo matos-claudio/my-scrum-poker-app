@@ -14,8 +14,8 @@ class Login extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            userEmail: '',
-            userPassword: ''
+            userEmail: 'caupath16@gmail.com',
+            userPassword: '123'
         }
         this.roomService = new RoomService()
     }
