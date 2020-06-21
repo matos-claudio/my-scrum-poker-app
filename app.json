@@ -24,7 +24,12 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "br.com.scrum.poker",
-      "buildNumber": "1.0.3"
+      "buildNumber": "1.0.3",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.605178659127-net19bu4mqmr7ma58t5vb62blhf6k7vl"
+        }
+      }
     },
     "sdkVersion": "37.0.0",
     "description": "",

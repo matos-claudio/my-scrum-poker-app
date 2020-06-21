@@ -12,6 +12,9 @@ import Login from '../view/login/login'
 import Menu from '../view/home/menu'
 
 const routes = createStackNavigator({
+  Login: {
+    screen: Login
+  },
   Menu: {
     screen: Menu
   },

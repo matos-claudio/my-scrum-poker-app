@@ -1,5 +1,7 @@
 import * as firebase from "firebase";
 
+//iOS-Client 605178659127-net19bu4mqmr7ma58t5vb62blhf6k7vl.apps.googleusercontent.com
+
 export default class FirebaseService {
   constructor() {
     this.firebase = this.loadConfiguration();
@@ -14,7 +16,7 @@ export default class FirebaseService {
       storageBucket: "my-scrum-app.appspot.com",
       messagingSenderId: "469510168452",
       appId: "1:469510168452:web:4ef498f739d4905e4747d1",
-      measurementId: "G-WQS4MP2SNN",
+      measurementId: "G-WQS4MP2SNN",                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
     };
 
     if (!firebase.apps.length) {
@@ -43,15 +45,31 @@ export default class FirebaseService {
         }).catch(error => {
             console.log(`errorCreate >>> ${JSON.stringify(error)}`)
             if(error.code === 'auth/weak-password'){
-                reject(this.response(500, 'A senha deve ter pelo menos 6 caracteres'))
+                reject(this.response(500, null, 'A senha deve ter pelo menos 6 caracteres'))
             } else if (error.code === 'auth/email-already-in-use'){
-                reject(this.response(500, 'O endereço de email já está sendo usado por outra conta'))
+                reject(this.response(500, null, 'O endereço de email já está sendo usado por outra conta'))
             }
         })
     })  
   }
 
-  response = (code, message) => {
-    return { code, message };
+  signInWithEmailAndPassword = (email, password) => {
+    return new Promise((resolve, reject) => {
+      this.firebase.auth().signInWithEmailAndPassword(email, password).then(user => {
+        console.log(`result >>> ${JSON.stringify(user)}`)
+      }).catch(error => {
+        console.log(`error >>> ${JSON.stringify(error)}`)
+      })
+    })
+  }
+
+  onAuthStateChanged = () => {
+    this.firebase.auth().onAuthStateChanged(user => {
+      console.log(`user >>> ${JSON.stringify(user)}`)
+    })
+  }
+
+  response = (code, data,  message) => {
+    return { code, data, message };
   }
 }
