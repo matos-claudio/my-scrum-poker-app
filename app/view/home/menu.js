@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import ListaSala from "../sala/lista-sala";
+import ListaTimes from "../times/lista-times";
 
 const Tab = createBottomTabNavigator();
 
@@ -20,6 +21,12 @@ export default class Menu extends Component {
         <Text>Settings!</Text>
       </View>
     );
+  }
+
+  TeamsScreen(){
+    return (
+      <ListaTimes/>
+    )
   }
 
   render() {
@@ -47,7 +54,7 @@ export default class Menu extends Component {
           }}>
           <Tab.Screen name="Home" component={this.HomeScreen} />
           <Tab.Screen name="Salas" component={this.SettingsScreen} />
-          <Tab.Screen name="Times" component={this.SettingsScreen} />
+          <Tab.Screen name="Times" component={this.TeamsScreen} />
           <Tab.Screen name="Perfil" component={this.SettingsScreen} />
         </Tab.Navigator>
       </NavigationContainer>

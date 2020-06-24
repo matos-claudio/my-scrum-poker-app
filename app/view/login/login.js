@@ -4,15 +4,12 @@ import {
   Text,
   StatusBar,
   TouchableOpacity,
-  Image,
-  TouchableWithoutFeedback,
-  TouchableHighlight
+  Alert
 } from "react-native";
 import { Container, Content, Form, Item, Icon, Input, H2, H1 } from "native-base";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "./style";
 import FirebaseService from "../../service/firebase/firebase-service";
-import GoogleService from "../../service/login/google/google-service";
 
 const image = require('../../../assets/icon_google.png')
 
@@ -20,24 +17,34 @@ export default class Login extends Component {
   constructor(){
     super()
     this.firebaseService = new FirebaseService()
-    this.googleService = new GoogleService()
     this.state = {
       email: 'caupath16@gmail.com',
       password: '123456'
     }
   }
   
-  componentWillMount = () => {
-    this.firebaseService.onAuthStateChanged()
+  componentWillMount = async () => {
+    const user = await this.firebaseService.onAuthStateChanged()
+    console.log(`USER >>> ${JSON.stringify(user)}`)
+    if(user != null){
+      this.renderMenu(user)
+    }
   }
 
   login = () => {
-    //this.firebaseService.createUserWithEmailAndPassword('caupath16@gmail.com', '123456')
-    this.firebaseService.signInWithEmailAndPassword(this.state.email, this.state.password)
+    this.firebaseService.signInWithEmailAndPassword(this.state.email, this.state.password).then(user => {
+      this.renderMenu(user)
+    }).catch(error => {
+      Alert.alert('Ops', error.message)
+    })
   }
 
-  loginWithGoogle = () => {
-    this.googleService.signInWithGoogle()
+  renderMenu = (user) => {
+    this.props.navigation.navigate('Menu', { user })
+  }
+
+  signup = () => {
+    this.props.navigation.navigate('Signup')
   }
 
   render() {
@@ -80,12 +87,6 @@ export default class Login extends Component {
                 </TouchableOpacity>
               </View>
             </View>
-            <TouchableWithoutFeedback onPress={() => this.loginWithGoogle()}>
-              <View style={[styles.viewFields, { alignItems: "center", justifyContent: "center" }]}>
-                <Image source={image}/>
-                <Text style={style.labelSignup}>Logar com o Google </Text>
-              </View>
-            </TouchableWithoutFeedback>
             <View style={styles.viewButtons}>
               <View style={style.viewButtonSignup}>
                 <Text style={style.labelSignup}>Não possui uma conta? </Text>

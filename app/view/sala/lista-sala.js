@@ -57,12 +57,12 @@ export default class ListaSala extends Component {
   }  
 
   componentDidMount = () => {
-    this.firebaseService.storeHighScore(1, 33)
-    this.firebaseService.setupHighscoreListener(1)
+    // this.firebaseService.storeHighScore(1, 33)
+    // this.firebaseService.setupHighscoreListener(1)
   }
 
   componentDidUpdate = () => {
-    this.firebaseService.setupHighscoreListener(1)
+    // this.firebaseService.setupHighscoreListener(1)
   }
     
   render() {
