@@ -10,9 +10,9 @@ export default class Header extends Component {
     render() {
         return (
             <SafeAreaView>
-                <View style={[style.headerComponent, this.props.margin && { marginHorizontal: 20 }]}>
+                <View style={[style.headerComponent, this.props.margin && { marginHorizontal: 0 }]}>
                     <TouchableOpacity style={style.buttonHeaderComponent} onPress={() => this.props.navigate.goBack()}>
-                        <Ionicons name={"md-arrow-back"} size={24} />
+                        <Ionicons name={"md-arrow-back"} size={24} color={this.props.color ? this.props.color : "#fff"} />
                         <Text style={style.labelTitleHeaderComponent}>{this.props.title}</Text>
                     </TouchableOpacity>
                 </View>

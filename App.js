@@ -5,7 +5,7 @@ import storeConfig from './app/store/storeConfig'
 
 console.disableYellowBox = true
 
-const store = storeConfig()
+const store = storeConfig();
 
 export default () => {
   return (

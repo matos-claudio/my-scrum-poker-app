@@ -15,6 +15,15 @@ export default style = StyleSheet.create({
     fontWeight: "bold",
     opacity: 0.5,
   },
+  title: {
+    color: '#FFF',
+    fontWeight: "bold",
+    opacity: 0.7,
+  },
+  subtitle: {
+    color: '#212121',
+    marginTop: 10
+  },
 
   viewFields: {
     flex: 1,

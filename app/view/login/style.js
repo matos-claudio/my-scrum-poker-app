@@ -100,7 +100,7 @@ export default style = StyleSheet.create({
     backgroundColor: "#E9EBF6",
     flex: 0.7,
   },
-  header: {
+  viewBodyLogin: {
     backgroundColor: "#9C56DE",
     flex: 3,
     borderBottomRightRadius: 190,

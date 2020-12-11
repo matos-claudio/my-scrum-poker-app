@@ -13,14 +13,20 @@ export default class ListaTimes extends Component {
     this.state = {
       showModal: false
     }
+    this.firebaseService = new FirebaseService();
   }
   
   componentDidMount = () => {
 
   }
 
-  criaTime = () => {
-
+  criarTime = () => {
+    const data = { teamName: this.state.teamName, teamPassword: this.state.password, userEmail: `caupath16@gmail.com` }
+    // this.firebaseService.saveTimeDatabase(data).then(() => {
+    //   console.log('sucesso...')
+    // }).catch(() => {
+    //   console.log('erro...')
+    // })
   }
 
   onRequestClose = () => {
@@ -48,9 +54,9 @@ export default class ListaTimes extends Component {
                 style={{ color: '#212121'}} 
                 placeholderTextColor={"#212121"}
                 autoCapitalize='none'
-                keyboardType='email-address'
-                onChangeText={email => this.setState({ email })}
-                value={this.state.email} />
+                keyboardType='text'
+                onChangeText={teamName => this.setState({ teamName })}
+                value={this.state.teamName} />
             </Item>
             <Item>
               <Icon active name="key" style={{ color: "#212121" }} />
@@ -64,7 +70,7 @@ export default class ListaTimes extends Component {
                 value={this.state.password}
               />
             </Item>
-            <TouchableOpacity style={[{ backgroundColor: '#9C56DE', height: 45, marginTop: 20, marginHorizontal: 20 }]} onPress={() => this.showModal()}>
+            <TouchableOpacity style={[{ backgroundColor: '#9C56DE', height: 45, marginTop: 20, marginHorizontal: 20 }]} onPress={() => this.criarTime()}>
                 <View style={styles.viewFooterView}>
                     <Text style={{color:'#fff', fontWeight: "bold"}}>Salvar</Text>
                 </View>

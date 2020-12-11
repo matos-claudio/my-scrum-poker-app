@@ -1,28 +1,39 @@
 import { createAppContainer } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
-import Signup from '../view/signup'
+import ViewSignup from '../view/signup/view-signup'
 import Poker from '../view/poker'
 import LoginRoom from '../view/room-login'
-import ScrumMasterStoriesList from '../view/scrum-master/room-stories'
 import TeamDevStoriesList from '../view/room-team-dev/room-stories'
 import CreateStorie from '../view/scrum-master/room-create-storie'
 import ProductOwnerStoriesList from '../view/product-owner/room-stories'
-import ListaSala from '../view/sala/lista-sala'
-import Login from '../view/login/login'
+import ViewListaSala from '../view/team/view-team-list'
+import ViewLogin from '../view/login/view-login'
 import Menu from '../view/home/menu'
+import CriarTime from '../view/times/cria-time'
+import ViewInitialLoad from '../view/initial-load/view-initial-load'
+import ViewCreateTeam from '../view/team/view-create-team'
 
 const routes = createStackNavigator({
-  Login: {
-    screen: Login
+  ViewCreateTeam: {
+    screen: ViewCreateTeam
+  },
+  ViewLogin: {
+    screen: ViewLogin
+  },
+  ViewInitialLoad : {
+    screen: ViewInitialLoad
+  },
+  ViewSignup: {
+    screen: ViewSignup
+  },
+  CriarTime: {
+    screen: CriarTime
   },
   Menu: {
     screen: Menu
   },
-  Login: {
-    screen: Login
-  },
-  ListaSala: {
-    screen: ListaSala
+  ViewListaSala: {
+    screen: ViewListaSala
   },
   LoginRoom : {
     screen: LoginRoom
@@ -30,14 +41,8 @@ const routes = createStackNavigator({
   Poker: {
     screen: Poker
   },
-  Signup: {
-    screen: Signup
-  },
   TeamDevStoriesList: {
     screen: TeamDevStoriesList
-  },
-  ScrumMasterStoriesList: {
-    screen: ScrumMasterStoriesList
   },
   
   ProductOwnerStoriesList: {
@@ -47,12 +52,6 @@ const routes = createStackNavigator({
   CreateStorie: {
     screen: CreateStorie
   },
-  // Login: {
-  //   screen: Login
-  // },
-  Signup: {
-    screen: Signup
-  }
 }, { headerMode: "null" })
 
 const App = createAppContainer(routes)

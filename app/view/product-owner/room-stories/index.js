@@ -3,11 +3,8 @@ import { FlatList, Text, StyleSheet, TouchableOpacity, Alert } from 'react-nativ
 import { ListItem, Container, Content, Right, Left, Body, Footer, View } from 'native-base'
 import HeaderComponent from '../../components/HeaderComponent';
 import AvatarListComponent from '../../components/AvatarListComponent';
-import socketIOClient from "socket.io-client";
-import { URL } from '../../../service/config/constants'
 import OnlineUsersComponent from '../../components/OnlineUsersComponent';
 import { connect } from 'react-redux'
-import RoomService from '../../../service/room';
 
 class ProductOwnerStoriesList extends Component {
     constructor(props) {
@@ -22,29 +19,7 @@ class ProductOwnerStoriesList extends Component {
         }
 
         this.stories = []
-        this.socketConnect = this.socketConnect.bind(this)
-        this.socketConnect()
-
-        this.roomService = new RoomService()
     }
-
-    socketConnect = () => {
-        // this.socket = SocketIOClient(BASE_URL, { query: { idAsapSocket: userId } })
-         this.socket = socketIOClient(URL)
-         
-         this.socket.on('connect', () => {
-            console.log('Conectado ao socket...');
-         })
-         this.socket.on('onlineMembers', members => {
-            console.log(`membros logados... ${JSON.stringify(members.members)}`)
-            this.setState({ members })
-         })
-         this.socket.on('votesFromMembers', votes => {
-            console.log(`VOTANDO ... ${JSON.stringify(votes)}`)
-            this.setState({ votes })
-         })
-    }
-
 
     findNameInMembers = (email) => {
         var result = this.state.members.members.find(member => member.email == email)

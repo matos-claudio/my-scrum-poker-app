@@ -4,7 +4,6 @@ import { Container, Content, View, H1 } from 'native-base'
 import Header from '../../components/Header'
 import { createStorieInTheRoom, loadedRoom } from '../../../store/actions/room'
 import { connect } from 'react-redux'
-import RoomService from '../../../service/room'
 
 export default class CreateStorie extends Component {
     constructor(props) {
@@ -17,9 +16,7 @@ export default class CreateStorie extends Component {
         }
 
         this.roomId = props.navigation.state.params.roomId
-        this.roomService = new RoomService()
         this.user = props.navigation.state.params.user
-
         console.log(`CREATESTORIE >>> ${JSON.stringify(props)}`)
     }
 

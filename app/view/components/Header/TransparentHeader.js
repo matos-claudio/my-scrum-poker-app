@@ -8,7 +8,7 @@ import { createNameAvatar } from "../../../helper/helper";
 const TransparentHeader = ({backgroundColor}) => {
   return (
     <SafeAreaView>
-      <View transparent style={[ style.headerComponent,  { backgroundColor: '#9C56DE' }]}>
+      <View transparent style={[ style.headerComponent,  { backgroundColor: '#fff' }]}>
         <AvatarComponent avatar={createNameAvatar("Claudio Matos")} />
       </View>
     </SafeAreaView>

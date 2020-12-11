@@ -11,9 +11,9 @@ export default globalStyle = StyleSheet.create({
     headerComponent: {
         flexDirection: "row",
         minHeight: 10,
-        alignItems: "center",
-        justifyContent: "flex-end",
+        justifyContent: "flex-start",
         marginTop: Platform.OS == "ios" ? 0 : 10,
+        padding: 20
     }, 
     buttonHeaderComponent: {
         flexDirection: "row",
@@ -22,8 +22,8 @@ export default globalStyle = StyleSheet.create({
     labelTitleHeaderComponent: {
         fontSize: 22,
         marginLeft: 10,
-        color: '#000',
-        fontWeight: "bold"
+        color: '#fff',
+        fontWeight: "bold",
     },
     labelSubtitleHeaderComponent: {
        // fontSize: 22,
@@ -40,7 +40,7 @@ export default globalStyle = StyleSheet.create({
         justifyContent: "center",
         marginRight: 15,
         borderWidth: 2,
-        borderColor: '#FFF'
+        borderColor: '#6a1b9a'
     },
 
     fontMyAvatar: {

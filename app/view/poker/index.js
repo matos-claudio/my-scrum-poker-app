@@ -3,14 +3,11 @@ import globalStyle from '../../style/app'
 import { View, Container, Content, H1, H3 } from 'native-base'
 import { TouchableOpacity, Text, FlatList, StyleSheet, Modal, TouchableHighlight, Alert, AppState, Platform } from 'react-native'
 import CardFlip from 'react-native-card-flip';
-import socketIOClient from "socket.io-client";
 import HeaderComponent from '../components/HeaderComponent';
 import AvatarComponent from '../components/AvatarComponent';
 import AvatarComponentWitchBadge from '../components/AvatarComponentWitchBadge';
-import { URL } from '../../service/config/constants'
 import { createNameAvatar } from '../../helper/helper'
 import OnlineUsersComponent from '../components/OnlineUsersComponent';
-import RoomService from '../../service/room';
 import { connect } from 'react-redux'
 import RoomNameComponent from '../components/RoomNameComponent';
 
@@ -29,39 +26,10 @@ class Poker extends Component {
             labelWaitingVorVotes: 'aguardando os votos dos demais...',
             showButton: false
         }
-
-        this.socketConnect = this.socketConnect.bind(this)
-        this.socketConnect()
-        this.roomService = new RoomService()
-    }
-
-    socketConnect = () => {
-       // this.socket = SocketIOClient(BASE_URL, { query: { idAsapSocket: userId } })
-        this.socket = socketIOClient(URL)
-        
-        this.socket.on('connect', () => {
-            console.log('Conectado ao socket >>>');
-        })
-
-        this.socket.on('FromAPI', data => {
-            console.log(`consultando socket... ${data}`)
-            this.setState({ date: data })
-        })
-        this.socket.on('onlineMembers', members => {
-            console.log(`membros logados... ${JSON.stringify(members)}`)
-            this.setState({ members })
-        })
-        this.socket.on('votesFromMembers', votes => {
-            console.log(`VOTANDO ... ${JSON.stringify(votes)}`)
-            this.setState({ votes, labelWaitingVorVotes: 'votação finalizada', showButton: true })
-        })
     }
 
     componentDidMount = async () => {
-        // if(Platform.OS === 'android'){
-        var roomId = this.props.roomLogged.room.data._id
-        await this.roomService.forceConnectAndroidClient({roomId})
-        // }
+
     }
 
     renderMembers = ({ item }) => {

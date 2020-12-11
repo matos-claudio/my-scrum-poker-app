@@ -1,68 +1,19 @@
 import React, { Component } from 'react'
 import { Container, Content, H3, View, Text, H1 } from 'native-base'
-import { TouchableOpacity, ActivityIndicator, TextInput, Image, Alert, AppState, Platform } from 'react-native'
+import { TouchableOpacity, ActivityIndicator, TextInput, Image, Alert } from 'react-native'
 import globalStyle from '../../style/app'
 import style from './style'
-import { authUser, logout } from '../../store/actions/user'
-import { roomLogout } from '../../store/actions/room'
+import { authUser } from '../../store/actions/user'
 import { connect } from 'react-redux'
-import RoomService from '../../service/room'
 
 const img = require('../../../assets/image.png')
 
-class Login_ extends Component {
+class Login extends Component {
     constructor(props) {
         super(props)
         this.state = {
             userEmail: 'caupath16@gmail.com',
             userPassword: '123'
-        }
-        this.roomService = new RoomService()
-    }
-
-    componentWillMount(){
-        this.props.onLogout()
-        this.props.onRoonLogout()
-    }
-
-    componentDidMount() {
-        AppState.addEventListener('change', this.handleAppStateChange);
-    }
-
-    componentWillUnmount(){
-        AppState.removeEventListener('change', this.handleAppStateChange)
-    }
-
-    handleAppStateChange = async (nextAppState) => {
-        console.log(`HANDLE >>> ${JSON.stringify(nextAppState)}`)
-        var room = this.props.room
-        var userLogged = this.props.user
-
-        if (nextAppState === 'inactive') {
-            this.disconnectRoomMember(room, userLogged)
-            this.reloadApp()
-        }  
-        
-        if(Platform.OS == 'android'){
-            if (nextAppState === 'background') {
-                this.disconnectRoomMember(room, userLogged)
-                this.reloadApp()
-            } 
-        }
-    }
-
-    reloadApp = () => {
-        this.props.navigation.navigate('Login')
-    }
-
-    disconnectRoomMember = async (roomLogged, userLogged) => {
-        try {
-            if(roomLogged != null){
-                await this.roomService.disconnectRoomMember({roomId: roomLogged.room.data._id, email: userLogged.user.data.userEmail})
-                this.props.onLogout()
-            }
-        } catch (error) {
-            alert('erro '+error)
         }
     }
 
@@ -76,13 +27,12 @@ class Login_ extends Component {
 
     componentDidUpdate = () => {
         var loggedUser = this.props.user
-        if (loggedUser != null && loggedUser.status == 200) {
-            this.props.navigation.navigate('LoginRoom')
-        } else if (loggedUser != null && loggedUser.status == 500){
-            this.props.onLogout()
-            Alert.alert('Ops :(', 'Não foi possível realizar o login.\nVerifique as informações e tente novamente')
-        }else {
-            this.props.onLogout()
+        if (loggedUser != null) {
+            if (loggedUser.loggedInSucess) {
+                this.props.navigation.navigate('LoginRoom')
+            } else {
+                Alert.alert('Opsss', loggedUser.user.message)
+            }
         }
     }
 
@@ -118,17 +68,12 @@ class Login_ extends Component {
     }
 }
 
-const mapStateToProps = ({ userLogged, roomLogged }) => {
-    console.log(`LOGADO>>> ${JSON.stringify(roomLogged)}`)
-    return { isLoading: userLogged.isLoading, user: userLogged.user, room: roomLogged.room }
+const mapStateToProps = ({ userLogged }) => {
+    return { isLoading: userLogged.isLoading, user: userLogged.user }
 }
 
 const mapDispatchToProps = dispatch => {
-    return { 
-        onLogin: user => dispatch(authUser(user)),
-        onLogout: () => dispatch(logout()),
-        onRoonLogout: () => dispatch(roomLogout()) 
-    }
+    return { onLogin: user => dispatch(authUser(user)) }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login_)
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

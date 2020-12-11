@@ -3,7 +3,7 @@ import { Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import ListaSala from "../sala/lista-sala";
+import ViewTeamList from "../team/view-team-list";
 import ListaTimes from "../times/lista-times";
 
 const Tab = createBottomTabNavigator();
@@ -11,7 +11,7 @@ const Tab = createBottomTabNavigator();
 export default class Menu extends Component {
   HomeScreen() {
     return (
-      <ListaSala/>
+      <ViewTeamList />
     );
   }
 
