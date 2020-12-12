@@ -2,25 +2,45 @@ import React, { Component } from "react";
 import { View, StatusBar, StyleSheet, ActivityIndicator } from "react-native";
 import { Container, Content } from "native-base";
 import * as firebase from "firebase";
+import { connect } from "react-redux";
 import { LogoComponent } from "../components/Logo/LogoComponent";
+import UserController from "../../controllers/user/user-controller";
+import { logginUser } from "../../store/actions/user/action-user";
 
-export default class ViewInitialLoad extends Component {
+class ViewInitialLoad extends Component {
   constructor(props) {
     super(props);
     this.loadConfiguration();
+    this.userController = new UserController();
   }
 
   componentDidMount = () => {
-    firebase.auth().onAuthStateChanged((user) => {
-      console.log("USUARIO " + JSON.stringify(user));
-      user !== null
-        ? this.renderView("Menu", user)
-        : this.renderView("ViewLogin", null);
+    this.logginUser();
+  };
+
+  logginUser = () => {
+    firebase.auth().onAuthStateChanged(async (user) => {
+      if (user !== null) {
+        const userDb = await this.userController.getUser(user.uid);
+        this.setUserData(user, userDb);
+      } else {
+        this.renderView('ViewLogin');
+      }
     });
   };
 
-  renderView = (view, user) => {
-    this.props.navigation.navigate(view, { user });
+  setUserData = (user, userDb) => {
+    const userLogged = {
+      uid: user.uid,
+      name: userDb.val().name,
+      email: user.email,
+    };
+    this.props.onLogin(userLogged);
+    this.renderView('Menu');
+  };
+
+  renderView = (view) => {
+    this.props.navigation.navigate(view);
   };
 
   loadConfiguration = () => {
@@ -69,3 +89,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
+
+const mapDispatchToProps = dispatch => {
+  return { onLogin: (user) => dispatch(logginUser(user)) };
+};
+
+export default connect(null, mapDispatchToProps)(ViewInitialLoad);

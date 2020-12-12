@@ -3,7 +3,7 @@ import { Container, Content, H3, View, Text, H1 } from 'native-base'
 import { TouchableOpacity, ActivityIndicator, TextInput, Image, Alert } from 'react-native'
 import globalStyle from '../../style/app'
 import style from './style'
-import { authUser } from '../../store/actions/user'
+import { authUser } from '../../store/actions/user/action-user'
 import { connect } from 'react-redux'
 
 const img = require('../../../assets/image.png')

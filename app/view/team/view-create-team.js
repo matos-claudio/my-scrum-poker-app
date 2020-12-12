@@ -6,17 +6,56 @@ import {
   StyleSheet,
   StatusBar,
   TextInput,
+  Alert,
 } from "react-native";
 import { Container, Content, H1 } from "native-base";
 import Header from "../components/Header";
+import TeamController from "../../controllers/team/team-controller";
 
 export default class ViewCreateTeam extends Component {
   constructor() {
     super();
     this.state = {
-      nomeEquipe: "",
+      teamName: "",
+      teamPassword: "",
+      teamDescription: "",
+      isLoading: false,
     };
+    this.teamController = new TeamController();
   }
+
+  isLoading = (isLoading) => {
+    this.setState({ isLoading });
+  };
+
+  validateFields = () => {
+    if (this.state.teamName === "") {
+      Alert.alert("Ops :(", "Preencha o campo nome equipe");
+      return false;
+    }
+    if (this.state.teamPassword === "") {
+      Alert.alert("Ops :(", "Preencha o campo senha equipe");
+      return false;
+    }
+    if (this.state.teamDescription === "") {
+      Alert.alert("Ops :(", "Preencha o campo descrição da equipe");
+      return false;
+    }
+    return true;
+  };
+
+  saveTeam = async () => {
+    this.isLoading(true);
+    if (this.validateFields()) {
+      const data = {
+        teamName: this.state.teamName,
+        teamPassword: this.state.teamPassword,
+        teamDescription: this.state.teamDescription,
+        emailUser: 'caupath16@gmail.com'
+      };
+      this.teamController.saveTeam(data);
+    }
+  };
 
   render() {
     return (
@@ -40,38 +79,40 @@ export default class ViewCreateTeam extends Component {
               style={styles.textInput}
               autoCapitalize="none"
               placeholder="nome equipe"
-              placeholderTextColor="#000"
+              placeholderTextColor="#424242"
               maxLength={20}
-              onChangeText={(nomeEquipe) => this.setState({ nomeEquipe })}
-              value={this.state.nomeEquipe}
+              onChangeText={(teamName) => this.setState({ teamName })}
+              value={this.state.teamName}
             />
             <TextInput
               style={styles.textInput}
               autoCapitalize="none"
               placeholder="senha equipe"
-              placeholderTextColor="#000"
+              placeholderTextColor="#424242"
               maxLength={20}
               blurOnSubmit={false}
-              onSubmitEditing={()=> Keyboard.dismiss()}
+              onSubmitEditing={() => Keyboard.dismiss()}
               textContentType="username"
-              onChangeText={(nomeEquipe) => this.setState({ nomeEquipe })}
-              value={this.state.nomeEquipe}
+              onChangeText={(teamPassword) => this.setState({ teamPassword })}
+              value={this.state.teamPassword}
             />
             <TextInput
               style={[styles.textInput, { height: 120 }]}
               autoCapitalize="none"
               placeholder="descrição da equipe"
-              placeholderTextColor="#000"
-              maxLength={20}
+              placeholderTextColor="#424242"
+              maxLength={100}
               textAlignVertical="top"
               multiline={true}
               numberOfLines={5}
-              onChangeText={(nomeEquipe) => this.setState({ nomeEquipe })}
-              value={this.state.nomeEquipe}
+              onChangeText={(teamDescription) =>
+                this.setState({ teamDescription })
+              }
+              value={this.state.teamDescription}
             />
           </View>
           <View style={styles.viewButton}>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={() => this.saveTeam()}>
               <Text style={styles.textButton}>CADASTRAR</Text>
             </TouchableOpacity>
           </View>
@@ -109,7 +150,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   button: {
-    backgroundColor: "#9C56DE",
+    backgroundColor: "#e64a19",
     height: 45,
     width: "100%",
     justifyContent: "center",

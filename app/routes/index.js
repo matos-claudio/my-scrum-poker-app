@@ -6,7 +6,7 @@ import LoginRoom from '../view/room-login'
 import TeamDevStoriesList from '../view/room-team-dev/room-stories'
 import CreateStorie from '../view/scrum-master/room-create-storie'
 import ProductOwnerStoriesList from '../view/product-owner/room-stories'
-import ViewListaSala from '../view/team/view-team-list'
+import ViewTeamList from '../view/team/view-team-list'
 import ViewLogin from '../view/login/view-login'
 import Menu from '../view/home/menu'
 import CriarTime from '../view/times/cria-time'
@@ -14,14 +14,11 @@ import ViewInitialLoad from '../view/initial-load/view-initial-load'
 import ViewCreateTeam from '../view/team/view-create-team'
 
 const routes = createStackNavigator({
-  ViewCreateTeam: {
-    screen: ViewCreateTeam
+  ViewInitialLoad: {
+    screen: ViewInitialLoad
   },
   ViewLogin: {
     screen: ViewLogin
-  },
-  ViewInitialLoad : {
-    screen: ViewInitialLoad
   },
   ViewSignup: {
     screen: ViewSignup
@@ -32,8 +29,11 @@ const routes = createStackNavigator({
   Menu: {
     screen: Menu
   },
-  ViewListaSala: {
-    screen: ViewListaSala
+  ViewTeamList: {
+    screen: ViewTeamList
+  },
+  ViewCreateTeam: {
+    screen: ViewCreateTeam
   },
   LoginRoom : {
     screen: LoginRoom

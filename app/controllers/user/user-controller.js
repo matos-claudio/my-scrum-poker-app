@@ -49,4 +49,6 @@ export default class UserController {
     deleteUser = () => this.apiUtilServices.deleteUser();
 
     onAuthStateChanged = async () => await this.apiUtilServices.onAuthStateChanged();
+
+    getUser = async (UID) => await this.apiUtilServices.getUser(UID);
 }

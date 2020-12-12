@@ -12,3 +12,4 @@ export const MSG_ERROR_SAVE_USER = "Erro ao criar o usuário. Verifique as infor
 export const MSG_SUCCESS_SAVE_USER = "Usuário cadastrado."
 
 export const COLLECTION_OF_USERS = 'users';
+export const COLLECTION_OF_TEAMS = 'teams';

@@ -57,7 +57,7 @@ export default class ViewLogin extends Component {
   };
 
   signup = () => {
-    this.props.navigation.navigate("Signup");
+    this.props.navigation.navigate("ViewSignup");
   };
 
   render() {

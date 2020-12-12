@@ -8,7 +8,14 @@ import ListaTimes from "../times/lista-times";
 
 const Tab = createBottomTabNavigator();
 
+let pros = null;
+
 export default class Menu extends Component {
+
+  constructor(props){
+    super(props)
+  }
+
   HomeScreen() {
     return (
       <ViewTeamList />
@@ -52,7 +59,7 @@ export default class Menu extends Component {
             activeTintColor: "#9C56DE",
             inactiveTintColor: "gray",          
           }}>
-          <Tab.Screen name="Home" component={this.HomeScreen} />
+          <Tab.Screen name="Home" component={() => <ViewTeamList myProps={{ navigate: this.props }} />} />
           <Tab.Screen name="Salas" component={this.SettingsScreen} />
           <Tab.Screen name="Times" component={this.TeamsScreen} />
           <Tab.Screen name="Perfil" component={this.SettingsScreen} />
