@@ -3,25 +3,31 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet,
   StatusBar,
   TextInput,
   Alert,
+  ActivityIndicator,
 } from "react-native";
-import { Container, Content, H1 } from "native-base";
+import { Container, Content, H1, Picker } from "native-base";
+import { connect } from "react-redux";
 import Header from "../components/Header";
 import TeamController from "../../controllers/team/team-controller";
+import { myTeamList } from "../../store/actions/team/action-team";
+import styles from './style';
 
-export default class ViewCreateTeam extends Component {
-  constructor() {
-    super();
+class ViewCreateTeam extends Component {
+  constructor(props) {
+    super(props);
     this.state = {
       teamName: "",
       teamPassword: "",
+      teamConfPassword: "",
       teamDescription: "",
       isLoading: false,
+      office: "NULL",
     };
     this.teamController = new TeamController();
+    this.user = props.navigation.getParam("user");
   }
 
   isLoading = (isLoading) => {
@@ -29,6 +35,10 @@ export default class ViewCreateTeam extends Component {
   };
 
   validateFields = () => {
+    if (this.state.office === "NULL") {
+      Alert.alert("Ops :(", "Preencha qual o seu papel na equipe");
+      return false;
+    }
     if (this.state.teamName === "") {
       Alert.alert("Ops :(", "Preencha o campo nome equipe");
       return false;
@@ -41,19 +51,29 @@ export default class ViewCreateTeam extends Component {
       Alert.alert("Ops :(", "Preencha o campo descrição da equipe");
       return false;
     }
+    if (this.state.teamConfPassword !== this.state.teamPassword) {
+      Alert.alert("Ops :(", "As senhas digitadas não são iguais");
+      return false;
+    }
     return true;
   };
 
   saveTeam = async () => {
-    this.isLoading(true);
     if (this.validateFields()) {
+      this.isLoading(true);
       const data = {
         teamName: this.state.teamName,
         teamPassword: this.state.teamPassword,
         teamDescription: this.state.teamDescription,
-        emailUser: 'caupath16@gmail.com'
+        userEmail: this.user.email,
+        userName: this.user.name,
+        userOffice: this.state.office,
       };
-      this.teamController.saveTeam(data);
+      const teamResponse = await this.teamController.saveTeam(data);
+      console.log(`TEAM ${JSON.stringify(teamResponse)}`)
+      if(!teamResponse.hasError) {
+        this.props.onSaveTeam(teamResponse.data)
+      }
     }
   };
 
@@ -65,9 +85,10 @@ export default class ViewCreateTeam extends Component {
           color="#000"
           navigate={this.props.navigation}
           enableButton={true}
+          withParam={true}
         />
         <Content contentContainerStyle={{ flexGrow: 1 }}>
-          <View style={styles.container}>
+          <View style={[styles.container, { padding: 20 }]}>
             <H1 style={styles.h1}>Criar equipe</H1>
             <Text style={styles.subtitle}>
               Crie a sua equipe,{"\n"}convide seus colegas e vamos para a{"\n"}
@@ -75,11 +96,28 @@ export default class ViewCreateTeam extends Component {
             </Text>
           </View>
           <View style={styles.viewFields}>
+            <Picker
+              note
+              mode="dropdown"
+              style={styles.picker}
+              selectedValue={this.state.office}
+              onValueChange={(itemValue, itemPosition) =>
+                this.setState({
+                  office: itemValue,
+                  choooseIndex: itemPosition,
+                })
+              }
+            >
+              <Picker.Item label="Qual o seu papel no time?" value="NULL" />
+              <Picker.Item label="Product Owner" value="PO" />
+              <Picker.Item label="Scrum Master" value="SM" />
+              <Picker.Item label="Time de Desenvolvimento" value="TD" />
+            </Picker>
             <TextInput
               style={styles.textInput}
               autoCapitalize="none"
               placeholder="nome equipe"
-              placeholderTextColor="#424242"
+              placeholderTextColor="#757575"
               maxLength={20}
               onChangeText={(teamName) => this.setState({ teamName })}
               value={this.state.teamName}
@@ -87,8 +125,9 @@ export default class ViewCreateTeam extends Component {
             <TextInput
               style={styles.textInput}
               autoCapitalize="none"
+              secureTextEntry={true}
               placeholder="senha equipe"
-              placeholderTextColor="#424242"
+              placeholderTextColor="#757575"
               maxLength={20}
               blurOnSubmit={false}
               onSubmitEditing={() => Keyboard.dismiss()}
@@ -97,10 +136,25 @@ export default class ViewCreateTeam extends Component {
               value={this.state.teamPassword}
             />
             <TextInput
+              style={styles.textInput}
+              autoCapitalize="none"
+              secureTextEntry={true}
+              placeholder="confirme a senha equipe"
+              placeholderTextColor="#757575"
+              maxLength={20}
+              blurOnSubmit={false}
+              onSubmitEditing={() => Keyboard.dismiss()}
+              textContentType="username"
+              onChangeText={(teamConfPassword) =>
+                this.setState({ teamConfPassword })
+              }
+              value={this.state.teamConfPassword}
+            />
+            <TextInput
               style={[styles.textInput, { height: 120 }]}
               autoCapitalize="none"
               placeholder="descrição da equipe"
-              placeholderTextColor="#424242"
+              placeholderTextColor="#757575"
               maxLength={100}
               textAlignVertical="top"
               multiline={true}
@@ -112,8 +166,14 @@ export default class ViewCreateTeam extends Component {
             />
           </View>
           <View style={styles.viewButton}>
-            <TouchableOpacity style={styles.button} onPress={() => this.saveTeam()}>
-              <Text style={styles.textButton}>CADASTRAR</Text>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => this.saveTeam()}
+            >
+              {!this.state.isLoading && (
+                <Text style={styles.textButton}>CADASTRAR</Text>
+              )}
+              {this.state.isLoading && <ActivityIndicator color="#fff" />}
             </TouchableOpacity>
           </View>
         </Content>
@@ -122,52 +182,8 @@ export default class ViewCreateTeam extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  background: {
-    backgroundColor: "#fff",
-  },
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-  viewFields: {
-    flex: 1,
-    padding: 20,
-  },
-  h1: {
-    color: "#000",
-    fontWeight: "bold",
-    letterSpacing: 1,
-  },
-  subtitle: {
-    color: "#424242",
-    letterSpacing: 1,
-  },
-  viewButton: {
-    flex: 1,
-    padding: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  button: {
-    backgroundColor: "#e64a19",
-    height: 45,
-    width: "100%",
-    justifyContent: "center",
-  },
-  textButton: {
-    fontWeight: "bold",
-    color: "#fff",
-    textAlign: "center",
-  },
-  textInput: {
-    backgroundColor: "#f5f5f5",
-    height: 45,
-    borderWidth: 0.3,
-    padding: 5,
-    borderColor: "#fafafa",
-    borderRadius: 5,
-    color: "#000",
-    marginTop: 10,
-  },
-});
+const mapDispatchToProps = dispatch => {
+  return { onSaveTeam: (teams) => dispatch(myTeamList(teams)) };
+};
+
+export default connect(null, mapDispatchToProps)(ViewCreateTeam);

@@ -14,6 +14,7 @@ import TransparentHeader from "../components/Header/TransparentHeader";
 import { CardListTeamsComponent } from "../components/CardListTeams/CardListTeamsComponent";
 import TeamController from "../../controllers/team/team-controller";
 import { ListEmptyComponent } from "../components/ListEmpty/ListEmptyComponent";
+import { myTeamList } from "../../store/actions/team/action-team";
 
 class ViewTeamList extends Component {
   constructor(props) {
@@ -24,6 +25,7 @@ class ViewTeamList extends Component {
       isLoading: true,
       teams: [],
     };
+    console.log(`PROPS ${JSON.stringify(props)}`)
   }
 
   componentDidMount = () => {
@@ -32,11 +34,12 @@ class ViewTeamList extends Component {
 
   getTeams = async () => {
     const teams = await this.teamController.getTeams(this.props.userLogged.email);
-    this.setState({ isLoading: false, teams: teams.data });
+    this.props.onSetListTeams(teams.data);
+    this.setState({ isLoading: false });
   };
 
   openCreateTeam = () => {
-    this.navigation.navigate("ViewCreateTeam");
+    this.navigation.navigate("ViewCreateTeam", { user: this.props.userLogged });
   };
 
   onPress = () => {
@@ -53,8 +56,8 @@ class ViewTeamList extends Component {
     <View style={styles.backgroundHeader}>
       <View style={styles.header}>
         <FlatList
-          data={this.state.teams}
-          style={{ top: 10 }}
+          data={this.props.teams}
+          style={{ top: 5 }}
           renderItem={({ item, index }) => (
             <CardListTeamsComponent
               key={index}
@@ -130,9 +133,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = ({ userLogged }) => {
-  console.log(`USER ${JSON.stringify(userLogged)}`)
-  return { userLogged: userLogged.user };
+const mapStateToProps = ({ userLogged, teamsReducer }) => {
+  return { userLogged: userLogged.user, teams: teamsReducer.teams };
 }
 
-export default connect(mapStateToProps, null)(ViewTeamList);
+const mapDispatchToProps = dispatch => {
+  return { onSetListTeams: (teams) => dispatch(myTeamList(teams)) };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ViewTeamList);

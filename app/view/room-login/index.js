@@ -10,7 +10,6 @@ import {
 import globalStyle from "../../style/app";
 import style from "./style";
 import { createNameAvatar } from "../../helper/helper";
-import { roomAuth, roomLogout } from "../../store/actions/room";
 import { connect } from "react-redux";
 
 const img = require("../../../assets/image.png");

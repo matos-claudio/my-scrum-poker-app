@@ -16,13 +16,20 @@ export default class TeamController {
       teamName: data.teamName,
       teamPassword: data.teamPassword,
       teamDescription: data.teamDescription,
-      createdBy: data.emailUser,
+      createdBy: data.userName,
       createdAt: moment().format("DD/MM/YYYY"),
+      members: [
+        {
+          userName: data.userName,
+          userEmail: data.userEmail,
+          userOffice: data.userOffice,
+        },
+      ],
     };
     try {
-      const teamResponse = await this.apiUtilServices.saveTeam(team);
-      console.log(`team ${JSON.stringify(teamResponse)}`);
-      return formatResponse(teamResponse);
+      await this.apiUtilServices.saveTeam(team);
+      const teams = await this.getTeams(data.userEmail);
+      return teams;
     } catch (error) {
       const message = formatError(error.code);
       return formatResponse(null, message, true);

@@ -36,6 +36,7 @@ class ViewInitialLoad extends Component {
       email: user.email,
     };
     this.props.onLogin(userLogged);
+    // this.props
     this.renderView('Menu');
   };
 

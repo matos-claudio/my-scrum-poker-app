@@ -43,9 +43,9 @@ export default class Menu extends Component {
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
-              if (route.name === "Home") {
-                iconName = focused ? "ios-home" : "md-home";
-              } else if (route.name === "Salas") {
+              if (route.name === "Equipes") {
+                iconName = focused ? "md-contacts" : "md-contacts";
+              } else if (route.name === "Ler QRCode") {
                 iconName = focused ? "ios-qr-scanner" : "md-qr-scanner";
               } else if (route.name === "Times") {
                 iconName = focused ? "md-contacts" : "md-contacts";
@@ -59,8 +59,8 @@ export default class Menu extends Component {
             activeTintColor: "#9C56DE",
             inactiveTintColor: "gray",          
           }}>
-          <Tab.Screen name="Home" component={() => <ViewTeamList myProps={{ navigate: this.props }} />} />
-          <Tab.Screen name="Salas" component={this.SettingsScreen} />
+          <Tab.Screen name="Equipes" component={() => <ViewTeamList myProps={{ navigate: this.props }} />} />
+          <Tab.Screen name="Ler QRCode" component={this.SettingsScreen} />
           <Tab.Screen name="Times" component={this.TeamsScreen} />
           <Tab.Screen name="Perfil" component={this.SettingsScreen} />
         </Tab.Navigator>

@@ -6,9 +6,12 @@ const icon = require("../../../../assets/icon-list-empty.png");
 
 export const ListEmptyComponent = () => (
   <View style={styles.container}>
-    <Image style={{width: 180, height: 180}} source={icon} />
+    <Image style={styles.image} source={icon} />
     <H1 style={styles.h1}>Ops!!!</H1>
-    <Text style={styles.text}>Você ainda não possui nenhuma equipe.{"\n"}Clique no botão abaixo e adicione.</Text>
+    <Text style={styles.text}>
+      Você ainda não possui nenhuma equipe.{"\n"}Clique no botão abaixo e
+      adicione.
+    </Text>
   </View>
 );
 
@@ -25,12 +28,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
     letterSpacing: 1,
-    padding: 10
-
-    //   font
+    padding: 10,
   },
   h1: {
-      letterSpacing: 1,
-    //   fontSize: 32
-  }
+    letterSpacing: 1,
+  },
+  image: {
+    width: 180,
+    height: 180,
+  },
 });
