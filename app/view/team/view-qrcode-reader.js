@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Container, Content } from "native-base";
-import { Camera } from "expo-camera";
+// import { Camera } from "expo-camera";
 import Header from "../components/Header";
 import styles from "./style";
 import TeamController from "../../controllers/team/team-controller";
@@ -52,7 +52,7 @@ export default class ViewQrCodeReader extends Component {
         />
         <Content contentContainerStyle={{ flexGrow: 1 }}>
           <View style={styles.container}>
-            <Camera
+            {/* <Camera
               ref={(cam) => {
                 this.camera = cam;
               }}
@@ -67,7 +67,7 @@ export default class ViewQrCodeReader extends Component {
                   <Text style={{ color: '#fff' }}>Ler novamente</Text>
                 </TouchableOpacity>
               </View>
-            </Camera>
+            </Camera> */}
           </View>
           <View style={styles.viewFooter}>
             <View style={styles.viewButtonFooter}>

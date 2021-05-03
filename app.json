@@ -31,7 +31,6 @@
         }
       }
     },
-    "sdkVersion": "37.0.0",
     "description": "",
     "android": {
       "versionCode": 4,
