@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import ViewTeamList from "../team/view-team-list";
 import ListaTimes from "../times/lista-times";
+import ViewQrCodeReader from "../team/view-qrcode-reader";
 
 const Tab = createBottomTabNavigator();
 
@@ -60,7 +61,7 @@ export default class Menu extends Component {
             inactiveTintColor: "gray",          
           }}>
           <Tab.Screen name="Equipes" component={() => <ViewTeamList myProps={{ navigate: this.props }} />} />
-          <Tab.Screen name="Ler QRCode" component={this.SettingsScreen} />
+          <Tab.Screen name="Ler QRCode" component={() => <ViewQrCodeReader myProps={{ navigate: this.props }}/>} />
           <Tab.Screen name="Times" component={this.TeamsScreen} />
           <Tab.Screen name="Perfil" component={this.SettingsScreen} />
         </Tab.Navigator>

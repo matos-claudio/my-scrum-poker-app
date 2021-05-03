@@ -10,6 +10,7 @@ import { Container, Content } from "native-base";
 import { Camera } from "expo-camera";
 import Header from "../components/Header";
 import styles from "./style";
+import TeamController from "../../controllers/team/team-controller";
 
 export default class ViewQrCodeReader extends Component {
   constructor() {
@@ -17,6 +18,7 @@ export default class ViewQrCodeReader extends Component {
     this.state = {
       hasPermission: null,
     };
+    this.teamController = new TeamController();
   }
 
   componentDidMount = async () => {
@@ -24,13 +26,19 @@ export default class ViewQrCodeReader extends Component {
     console.log(`status ${status}`);
     this.setState({ status: status });
   };
-  handleBarCodeScanned = ({ type, data }) => {
-    console.log(`Data ${data}`);
+  handleBarCodeScanned = ({ data }) => {
+    let barcodeData = data;
+    let obj = JSON.parse(barcodeData)
+    console.log(`Data ${JSON.stringify(obj.teamName)}`);
     this.camera.pausePreview();
+    this.saveUserInTeam(obj);
   };
 
   handleResumePreview = () => {
     this.camera.resumePreview();
+  }
+  saveUserInTeam = (data) => {
+    this.teamController.saveUserTeam(data.teamName, data.teamPassword, null);
   }
 
   render() {

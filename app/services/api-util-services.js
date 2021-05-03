@@ -1,5 +1,6 @@
 import * as firebase from "firebase";
 import { COLLECTION_OF_USERS, COLLECTION_OF_TEAMS } from "../helper/constants";
+import md5 from "md5";
 
 export default class ApiUtilServices {
   constructor() {}
@@ -26,7 +27,16 @@ export default class ApiUtilServices {
   saveTeam = async (data) =>
     await firebase.database().ref(`${COLLECTION_OF_TEAMS}`).push(data);
 
+  addMemberTeam = async (data, key) =>
+    await firebase.database().ref(`${COLLECTION_OF_TEAMS}/${key}/members`).update(data);
+
   getTeams = async () => {
-    return await firebase.database().ref(`${COLLECTION_OF_TEAMS}`).once('value');
+    return await firebase
+      .database()
+      .ref(`${COLLECTION_OF_TEAMS}`)
+      .once("value");
+  };
+  convertPasswordMd5 = (password) => {
+    return md5(password);
   };
 }

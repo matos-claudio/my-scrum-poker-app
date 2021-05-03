@@ -5,15 +5,31 @@ import SvgQRCode from "react-native-qrcode-svg";
 import Header from "../components/Header";
 import styles from "./style";
 import md5 from 'md5';
+import TeamController from "../../controllers/team/team-controller";
 
 export default class ViewShareQrCode extends Component {
   constructor(props) {
     super(props);
+    const { navigation } = this.props;
+    //this.data = navigation.getParam('data');
+    this.data = {
+      teamName: "DX1",
+      teamPassword: "123",
+    }
+    this.teamController = new TeamController();
+    this.state = {
+        objQrCode: null,
+    }
   }
 
   componentDidMount = () => {
-    const message = md5('1234');
-    console.log(message)    
+    const password = this.teamController.convertPasswordMd5(this.data.teamPassword);
+    const objQrCode = {
+        teamPassword: password,
+        teamName: this.data.teamName
+    }
+    this.setState({ objQrCode });
+    console.log(JSON.stringify(objQrCode))    
   }
 
   render() {
@@ -32,7 +48,7 @@ export default class ViewShareQrCode extends Component {
           </View>
           <View style={{ padding: 25 }}>
             <Card style={styles.card}>
-              <SvgQRCode size={250} value={"Testando..."} />
+              {this.state.objQrCode !== null && <SvgQRCode size={250} value={JSON.stringify(this.state.objQrCode)} />}
             </Card>
           </View>
           <View style={{ padding: 25 }}>

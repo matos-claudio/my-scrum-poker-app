@@ -16,11 +16,11 @@ import ViewQrCodeReader from "../view/team/view-qrcode-reader";
 
 const routes = createStackNavigator(
   {
-    ViewQrCodeReader: {
-      screen: ViewQrCodeReader,
-    },
     ViewInitialLoad: {
       screen: ViewInitialLoad,
+    },
+    ViewQrCodeReader: {
+      screen: ViewQrCodeReader,
     },
     ViewLogin: {
       screen: ViewLogin,

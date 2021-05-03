@@ -72,10 +72,29 @@ class ViewCreateTeam extends Component {
       const teamResponse = await this.teamController.saveTeam(data);
       console.log(`TEAM ${JSON.stringify(teamResponse)}`)
       if(!teamResponse.hasError) {
-        this.props.onSaveTeam(teamResponse.data)
+        this.props.onSaveTeam(teamResponse.data);
+        this.alertShareQrCode(this.state.teamName, this.state.teamPassword);
       }
     }
   };
+
+  alertShareQrCode = (teamName, teamPassword) => {
+    Alert.alert(':)', `Equipe ${this.state.teamName} criada.\nDeseja gerar o invite via QRCode?`, [
+      {
+        text: "Não",
+        onPress: () => console.log(`Cancelado`),
+        style: 'cancel',
+      },
+      {
+        text: "Sim",
+        onPress: () => this.openShareQrCode(teamName, teamPassword),
+      }
+    ], { cancelable: false });
+  }
+
+  openShareQrCode = (teamName, teamPassword) => {
+    this.props.navigation.navigate('ViewShareQrCode', { data: { teamName, teamPassword } });
+  }
 
   render() {
     return (
